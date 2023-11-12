@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sections', function (Blueprint $table) {
+        Schema::create('school_years', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('capacity')->default(0);
-            $table->foreignId('adviser_id')->constrained('users')->onDelete('cascade'); // 'users' table is the default table name for the model 'User
-            $table->string('section_code');
-            $table->string('section_description')->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('inactive');
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sections');
+        Schema::dropIfExists('school_years');
     }
 };
