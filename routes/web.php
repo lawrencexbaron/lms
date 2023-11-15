@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\EnrollController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -28,6 +29,10 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     // Section Routes
     Route::get('/sections', [SectionController::class, 'index'])->name('sections.index');
+    Route::get('/sections/create', [SectionController::class, 'create'])->name('section.create');
+
+    // Enroll Routes
+    Route::get('/enrolled', [EnrollController::class, 'enrolled'])->name('enrolled.index');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
