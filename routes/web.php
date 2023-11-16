@@ -30,6 +30,11 @@ Route::middleware('auth')->group(function () {
     // Section Routes
     Route::get('/sections', [SectionController::class, 'index'])->name('sections.index');
     Route::get('/sections/create', [SectionController::class, 'create'])->name('section.create');
+    Route::post('/sections/store', [SectionController::class, 'store'])->name('section.store');
+    Route::delete('/sections/delete/{section}', [SectionController::class, 'destroy'])->name('section.delete');
+    Route::get('/sections/edit/{section}', [SectionController::class, 'edit'])->name('section.edit');
+    Route::put('/sections/update/{section}', [SectionController::class, 'update'])->name('section.update');
+    Route::get('/sections/{section}', [SectionController::class, 'show'])->name('section.show');
 
     // Enroll Routes
     Route::get('/enrolled', [EnrollController::class, 'enrolled'])->name('enrolled.index');
