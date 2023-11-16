@@ -13,11 +13,60 @@ class SectionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $sections = Section::orderBy('name', 'desc')->with('grade', 'schoolyear')->get();
+        // $sections = Section::orderBy('name', 'desc')->with('grade', 'schoolyear')->get();
+
+        // retrieve search term, page and limit from url
+        $search = $request->search ?? '';
+        $page = $request->page ?? 1;
+        $limit = $request->limit ?? 5;
+
+        // get paginated sections
+        $sections = Section::where('name', 'like', '%'.$search.'%')
+            ->orWhere('section_code', 'like', '%'.$search.'%')
+            ->orWhere('section_description', 'like', '%'.$search.'%')
+            ->orWhere('status', 'like', '%'.$search.'%')
+            ->orderBy('name', 'asc')
+            ->with('grade', 'schoolyear')
+            ->paginate($limit, ['*'], 'page', $page);
+
+        if ($request->ajax()) {
+            return view('section.table', compact('sections'));
+        }
+
         return view('section.index', compact('sections'));
+
+    }
+
+    public function getSections(Request $request){
+        // retrieve search term, page and limit from url
+        $search = $request->search ?? '';
+        $page = $request->page ?? 1;
+        $show = $request->show ?? 5;
+
+        // get paginated sections
+        $sections = Section::where('name', 'like', '%'.$search.'%')
+            ->orWhere('section_code', 'like', '%'.$search.'%')
+            ->orWhere('section_description', 'like', '%'.$search.'%')
+            ->orWhere('status', 'like', '%'.$search.'%')
+            ->orWhere('capacity', 'like', '%'.$search.'%')
+            ->orWhereRelation('adviser', 'first_name', 'like', '%'.$search.'%')
+            ->orWhereRelation('adviser', 'last_name', 'like', '%'.$search.'%')
+            ->orWhereRelation('grade', 'name', 'like', '%'.$search.'%')
+            ->orderBy('id', 'asc')
+            ->with('grade', 'schoolyear', 'adviser')
+            ->paginate($show, ['*'], 'page', $page);
+
+        $response = [
+            'sections' => $sections->items(),
+            'total' => $sections->total(),
+            'total_pages' => $sections->lastPage(),
+            'current_page' => $sections->currentPage(),
+        ];
+
+        return response()->json($response);
     }
 
     /**
@@ -133,6 +182,10 @@ class SectionController extends Controller
         $section = Section::findOrFail($id);
         $section->delete();
 
-        return redirect()->route('sections.index')->with('status', 'Section deleted successfully.');
+        return response()->json([
+            'message' => 'Section deleted successfully.',
+            'status' => 'success',
+        ]);
+    
     }
 }

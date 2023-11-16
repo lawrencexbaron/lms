@@ -7,8 +7,13 @@
 
     <div class="py-12">
         <div class="max-w-7xl px-2 py-2 mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white rounded px-4 py-5 border">
-                <form action="{{ route('section.store') }}" method="POST">
+            <div class="bg-white rounded border">
+                <div class="border-b px-3 py-2">
+                    <p class="text-md font-medium">
+                        Create Section
+                    </p>
+                </div>
+                <form action="{{ route('section.store') }}" class="px-4 py-5" method="POST">
                     @csrf
                     <div class="mb-2">
                         <x-input-label for="name" class="font-bold text-gray-800">Name</x-input-label>
@@ -90,6 +95,7 @@
                         <x-input-error :messages="$errors->get('status')" class="" />
                     </div>
                     <div class=" flex justify-end">
+                        <a href="{{ route('sections.index') }}" class="bg-gray-200 text-gray-700 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-300 mr-2">Back</a>
                         <x-primary-button class="">Create</x-primary-button>
                     </div>
                 </form>

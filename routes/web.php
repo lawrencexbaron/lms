@@ -25,6 +25,8 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/sections/getsections', [SectionController::class, 'getSections'])->name('section.getSections');
+
 
 Route::middleware('auth')->group(function () {
     // Section Routes
@@ -35,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/sections/edit/{section}', [SectionController::class, 'edit'])->name('section.edit');
     Route::put('/sections/update/{section}', [SectionController::class, 'update'])->name('section.update');
     Route::get('/sections/{section}', [SectionController::class, 'show'])->name('section.show');
+    // Route::get('/sections/getsections', [SectionController::class, 'getSections'])->name('section.getSections');
 
     // Enroll Routes
     Route::get('/enrolled', [EnrollController::class, 'enrolled'])->name('enrolled.index');
