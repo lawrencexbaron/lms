@@ -15,8 +15,23 @@ class Section extends Model
         'adviser_id',
         'grade_level_id',
         'school_year_id',
-        'semester_id',
         'section_code',
         'section_description',
+        'status',
     ];
+
+    public function adviser()
+    {
+        return $this->belongsTo(User::class, 'adviser_id');
+    }
+
+    public function grade()
+    {
+        return $this->belongsTo(Grade::class, 'grade_level_id');
+    }
+
+    public function schoolyear()
+    {
+        return $this->belongsTo(SchoolYear::class, 'school_year_id');
+    }
 }
