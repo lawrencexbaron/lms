@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\EnrollController;
+use App\Http\Controllers\GradeLevelController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -38,6 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/sections/update/{section}', [SectionController::class, 'update'])->name('section.update');
     Route::get('/sections/{section}', [SectionController::class, 'show'])->name('section.show');
     // Route::get('/sections/getsections', [SectionController::class, 'getSections'])->name('section.getSections');
+
+    Route::get('/grades/rooms', [GradeLevelController::class, 'index'])->name('graderoom.index');
 
     // Enroll Routes
     Route::get('/enrolled', [EnrollController::class, 'enrolled'])->name('enrolled.index');
