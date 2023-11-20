@@ -42,6 +42,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/grades/rooms', [GradeLevelController::class, 'index'])->name('graderoom.index');
 
+    // Grade Level Routes
+    Route::get('/grades/create', [GradeLevelController::class, 'CreateGradeLevel'])->name('grade.create');
+    Route::post('/grades/store', [GradeLevelController::class, 'StoreGradeLevel'])->name('grade.store');
+    Route::get('/grades/getgrades', [GradeLevelController::class, 'GetGradeLevels'])->name('grade.getgrades');
+
     // Enroll Routes
     Route::get('/enrolled', [EnrollController::class, 'enrolled'])->name('enrolled.index');
 

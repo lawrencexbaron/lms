@@ -14,7 +14,7 @@ class GradeLevelController extends Controller
     }
 
     public function CreateGradeLevel(){
-        return view('graderoom.create-grade-level');
+        return view('graderoom.create-grades');
     }
 
     public function CreateRoom(){
@@ -44,7 +44,27 @@ class GradeLevelController extends Controller
 
         Grade::create($request->all());
 
-        return redirect()->route('graderoom.index')->with('success', 'Grade Level created successfully.');
+        return redirect()->route('graderoom.index')->with('gradesuccess', 'Grade Level created successfully.');
+    }
+
+    public function GetGradeLevels(Request $request){
+        $search = $request->search ?? '';
+        $page = $request->page ?? 1;
+        $show = $request->show ?? 5;
+
+        $grades = Grade::where('name', 'like', '%'.$search.'%')
+            ->orWhere('status', 'like', '%'.$search.'%')
+            ->orderBy('id', 'asc')
+            ->paginate($show, ['*'], 'page', $page);
+
+        $response = [
+            'grades' => $grades->items(),
+            'total' => $grades->total(),
+            'total_pages' => $grades->lastPage(),
+            'current_page' => $grades->currentPage(),
+        ];
+
+        return response()->json($response);
     }
 
     public function EditGradeLevel($id){

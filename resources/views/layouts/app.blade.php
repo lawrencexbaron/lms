@@ -17,25 +17,15 @@
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
-            <!-- Page Heading -->
-            {{-- @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif --}}
 
-            <div class="flex h-screen fixed w-full">
+            <div class="flex w-full">
 
                 {{-- Page Sidebar --}}
-                <aside class="h-full w-80">
+                <aside class="min-h-screen w-80 sm:block hidden">
                     @include('layouts.sidebar')
                 </aside>
-            
-
                 <!-- Page Content -->
-                <main class="w-full">
+                <main class=" w-full">
                     {{ $slot }}
                 </main>
             </div>
