@@ -40,12 +40,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/sections/{section}', [SectionController::class, 'show'])->name('section.show');
     // Route::get('/sections/getsections', [SectionController::class, 'getSections'])->name('section.getSections');
 
+    // Room Routes
     Route::get('/grades/rooms', [GradeLevelController::class, 'index'])->name('graderoom.index');
+    Route::get('/rooms/create', [GradeLevelController::class, 'CreateRoom'])->name('room.create');
+    Route::post('/rooms/store', [GradeLevelController::class, 'StoreRoom'])->name('room.store');
+    Route::get('/rooms/getrooms', [GradeLevelController::class, 'GetRooms'])->name('room.getrooms');
+    Route::delete('/rooms/delete/{room}', [GradeLevelController::class, 'DeleteRoom'])->name('room.delete');
+    Route::get('/rooms/edit/{room}', [GradeLevelController::class, 'EditRoom'])->name('room.edit');
+    Route::put('/rooms/update/{room}', [GradeLevelController::class, 'UpdateRoom'])->name('room.update');
 
     // Grade Level Routes
     Route::get('/grades/create', [GradeLevelController::class, 'CreateGradeLevel'])->name('grade.create');
     Route::post('/grades/store', [GradeLevelController::class, 'StoreGradeLevel'])->name('grade.store');
     Route::get('/grades/getgrades', [GradeLevelController::class, 'GetGradeLevels'])->name('grade.getgrades');
+    Route::delete('/grades/delete/{grade}', [GradeLevelController::class, 'DeleteGradeLevel'])->name('grade.delete');
+    Route::get('/grades/edit/{grade}', [GradeLevelController::class, 'EditGradeLevel'])->name('grade.edit');
+    Route::put('/grades/update/{grade}', [GradeLevelController::class, 'UpdateGradeLevel'])->name('grade.update');
 
     // Enroll Routes
     Route::get('/enrolled', [EnrollController::class, 'enrolled'])->name('enrolled.index');

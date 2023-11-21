@@ -64,6 +64,24 @@
                         <x-input-error :messages="$errors->get('grade_level_id')" class="" />
                     </div>
                     <div class="mb-2">
+                        <x-input-label for="school_year_id" class="font-bold text-gray-800">Room</x-input-label>
+                        @if(
+                            isset($rooms) && $rooms->count() > 0
+                        )
+                            <select name="room_id" id="room_id" class="w-full border-gray-300 rounded mt-1 focus:border-indigo-600 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                <option value="0" selected disabled>Select Room</option>
+                                @foreach($rooms as $room)
+                                    <option value="{{ $room->id }}">{{ $room->name }}</option>
+                                @endforeach
+                            </select>
+                        @else
+                        <select name="room_id" id="room_id" class="w-full border-gray-300 rounded mt-1 focus:border-indigo-600 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            <option value="0" selected disabled>No room found.</option>
+                        </select>
+                        @endif
+                        <x-input-error :messages="$errors->get('room_id')" class="" />
+                    </div>
+                    <div class="mb-2">
                         <x-input-label for="school_year_id" class="font-bold text-gray-800">School Year</x-input-label>
                         @if(
                             isset($school_years) && $school_years->count() > 0

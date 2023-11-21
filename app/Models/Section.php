@@ -15,6 +15,7 @@ class Section extends Model
         'adviser_id',
         'grade_level_id',
         'school_year_id',
+        'room_id',
         'section_code',
         'section_description',
         'status',
@@ -33,5 +34,10 @@ class Section extends Model
     public function schoolyear()
     {
         return $this->belongsTo(SchoolYear::class, 'school_year_id');
+    }
+    
+    public function room()
+    {
+        return $this->belongsTo(Room::class, 'room_id');
     }
 }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('adviser_id')->constrained('users')->onDelete('cascade'); // 'users' table is the default table name for the model 'User
             $table->foreignId('grade_level_id')->nullabe()->constrained('grades')->onDelete('cascade');
             $table->foreignId('school_year_id')->nullabe()->constrained('school_years')->onDelete('cascade');
+            $table->foreignId('room_id')->nullabe()->constrained('rooms')->onDelete('cascade');
             $table->string('section_code');
             $table->string('section_description')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');

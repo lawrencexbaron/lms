@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Section;
 use App\Models\Grade;
 use App\Models\SchoolYear;
+use App\Models\Room;
 
 class SectionController extends Controller
 {
@@ -56,7 +57,7 @@ class SectionController extends Controller
             ->orWhereRelation('adviser', 'last_name', 'like', '%'.$search.'%')
             ->orWhereRelation('grade', 'name', 'like', '%'.$search.'%')
             ->orderBy('id', 'asc')
-            ->with('grade', 'schoolyear', 'adviser')
+            ->with('grade', 'schoolyear', 'adviser', 'room')
             ->paginate($show, ['*'], 'page', $page);
 
         $response = [
@@ -78,7 +79,8 @@ class SectionController extends Controller
         $teachers = User::where('role', 'teacher')->get();
         $grade_levels = Grade::where('status', 'active')->get();
         $school_years = SchoolYear::where('status', 'active')->get();
-        return view('section.create', compact('teachers', 'grade_levels', 'school_years'));
+        $rooms = Room::where('status', 'active')->get();
+        return view('section.create', compact('teachers', 'grade_levels', 'school_years', 'rooms'));
     }
 
     /**
@@ -92,6 +94,7 @@ class SectionController extends Controller
             'capacity' => 'required',
             'adviser_id' => 'required',
             'grade_level_id' => 'required',
+            'room_id' => 'required',
             'school_year_id' => 'required',
             'section_code' => 'required',
             'section_description' => 'required',
@@ -104,6 +107,7 @@ class SectionController extends Controller
             'capacity' => $request->capacity,
             'adviser_id' => $request->adviser_id,
             'grade_level_id' => $request->grade_level_id,
+            'room_id' => $request->room_id,
             'school_year_id' => $request->school_year_id,
             'section_code' => $request->section_code,
             'section_description' => $request->section_description,
@@ -121,7 +125,7 @@ class SectionController extends Controller
     public function show(string $id)
     {
         //
-        $section = Section::findOrFail($id)->with('grade', 'schoolyear', 'adviser')->first();
+        $section = Section::findOrFail($id)->with('grade', 'schoolyear', 'adviser', 'room')->first();
         return view('section.show', compact('section'));
     }
 
@@ -135,8 +139,9 @@ class SectionController extends Controller
         $teachers = User::where('role', 'teacher')->get();
         $grade_levels = Grade::where('status', 'active')->get();
         $school_years = SchoolYear::where('status', 'active')->get();
+        $rooms = Room::where('status', 'active')->get();
 
-        return view('section.edit', compact('section', 'teachers', 'grade_levels', 'school_years'));
+        return view('section.edit', compact('section', 'teachers', 'grade_levels', 'school_years', 'rooms'));
     }
 
     /**
@@ -151,6 +156,7 @@ class SectionController extends Controller
             'adviser_id' => 'required',
             'grade_level_id' => 'required',
             'school_year_id' => 'required',
+            'room_id' => 'required',
             'section_code' => 'required',
             'section_description' => 'required',
             'status' => 'sometimes',
@@ -163,6 +169,7 @@ class SectionController extends Controller
             'capacity' => $request->capacity,
             'adviser_id' => $request->adviser_id,
             'grade_level_id' => $request->grade_level_id,
+            'room_id' => $request->room_id,
             'school_year_id' => $request->school_year_id,
             'section_code' => $request->section_code,
             'section_description' => $request->section_description,

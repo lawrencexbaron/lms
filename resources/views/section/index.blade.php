@@ -51,6 +51,7 @@
                                     <th class="px-3 py-2 uppercase text-sm">Section Name</th>
                                     <th class="px-3 py-2 uppercase text-sm">Code</th>
                                     <th class="px-3 py-2 uppercase text-sm">Grade</th>
+                                    <th class="px-3 py-2 uppercase text-sm">Room</th>
                                     <th class="px-3 py-2 uppercase text-sm">Adviser</th>
                                     <th class="px-3 py-2 uppercase text-sm">Capacity</th>
                                     <th class="px-3 py-2 uppercase text-sm">Action</th>
@@ -62,6 +63,7 @@
                                         <td x-text="section.name" class="px-3 py-2"></td>
                                         <td x-text="section.section_code" class="px-3 py-2"></td>
                                         <td x-text="section.grade.name" class="px-3 py-2"></td>
+                                        <td x-text="section.room.name" class="px-3 py-2"></td>
                                         <td x-text="`${section.adviser.last_name}, ${section.adviser.first_name}`" class="px-3 py-2"></td>
                                         <td x-text="section.capacity" class="px-3 py-2"></td>
                                         <td class="px-3 py-2 flex mx-auto whitespace-nowrap items-center justify-center gap-1">
