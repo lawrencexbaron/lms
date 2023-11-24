@@ -14,7 +14,7 @@
                                 Learner Information
                             </p>
                         </div>
-                        <div class="w-full flex gap-10 items-center my-auto">
+                        <div class="w-full flex gap-4 items-center my-auto">
                             <div class="flex flex-col">
                                 <x-input-label for="lrn" :value="__('School Year')" />
                                 <p>2022-2023</p>
@@ -23,29 +23,32 @@
                                 <x-input-label for="lrn" :value="__('Grade Level')" />
                                 <select @focus="clearError('grade_level')" x-model="formData.grade_level" name="grade_level" id="grade_level" class="border px-2 py-1 border-gray-300 rounded-md">
                                     <option value="">Select Grade Level</option>
-                                    <option value="1">Grade 1</option>
-                                    <option value="2">Grade 2</option>
-                                    <option value="3">Grade 3</option>
-                                    <option value="4">Grade 4</option>
-                                    <option value="5">Grade 5</option>
-                                    <option value="6">Grade 6</option>
+                                    @if(isset($grades))
+                                        @foreach($grades as $grade)
+                                            <option value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                        @endforeach
+                                    @endif
                                 </select>
                                 <span x-show="hasError('grade_level')" x-text="getError('grade_level')" class="text-red-500 text-xs"></span>
                             </div>
                             <div class="flex-col flex">
                                 <x-input-label for="type" :value="__('Student Type')" />
-                                <div class="flex gap-4">
+                                <div class="flex gap-2">
                                     <div class="flex gap-2 items-center">
-                                        <input @focus="clearError('student_type')" x-model="formData.student_type" value="old_student" type="radio" name="student_type" id="student_type" class="border-gray-300 rounded-md" />
+                                        <input @focus="clearError('student_type')" x-model="formData.student_type" value="old" type="radio" name="student_type" id="student_type" class="border-gray-300 rounded-md" />
                                         <x-input-label for="student_type" :value="__('Old Student')" />
                                     </div>
                                     <div class="flex gap-2 items-center">
-                                        <input @focus="clearError('student_type')" x-model="formData.student_type" value="new_student" type="radio" name="student_type" id="student_type" class="border-gray-300 rounded-md" />
+                                        <input @focus="clearError('student_type')" x-model="formData.student_type" value="new" type="radio" name="student_type" id="student_type" class="border-gray-300 rounded-md" />
                                         <x-input-label for="student_type" :value="__('New Student')" />
                                     </div>
                                     <div class="flex gap-2 items-center">
                                         <input @focus="clearError('student_type')" x-model="formData.student_type" value="balik_aral" type="radio" name="student_type" id="student_type" class="border-gray-300 rounded-md" />
                                         <x-input-label for="student_type" :value="__('Balik Aral')" />
+                                    </div>
+                                    <div class="flex gap-2 items-center">
+                                        <input @focus="clearError('student_type')" x-model="formData.student_type" value="transferee" type="radio" name="student_type" id="student_type" class="border-gray-300 rounded-md" />
+                                        <x-input-label for="student_type" :value="__('Transferee')" />
                                     </div>
                                 </div>
                                 <span x-show="hasError('student_type')" x-text="getError('student_type')" class="text-red-500 text-xs"></span>
@@ -486,7 +489,7 @@ function EnrollmentApplication(){
             alert('submit');
             console.log(this.formData);
 
-            const data = JSON.stringify(this.formData);
+            const fdata = JSON.stringify(this.formData);
 
             fetch('/enroll', {
                 method: 'POST',
@@ -494,12 +497,12 @@ function EnrollmentApplication(){
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                body: data
+                body: fdata
             }).then(response => response.json())
             .then(data => {
-                console.log(data);
+                console.log(data.data);
                 // redirect to enrollment success page with the data
-                window.location.href = '/enroll/success/' + data.id;
+                window.location.href = '/enroll/success/' + data.data.student_number;
 
             })
             .catch((error) => {
