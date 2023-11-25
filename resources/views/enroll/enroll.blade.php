@@ -358,6 +358,10 @@ function EnrollmentApplication(){
             if(!this.formData.gwa || this.formData.gwa.trim() === ''){
                 this.errors.gwa = "GWA is required";
             }
+            if(this.formData.gwa && !this.formData.gwa.match(/^[0-9]+(\.[0-9]{1,2})?$/)){
+                this.errors.gwa = "GWA must be a number with 2 decimal places";
+            }
+            
             if(!this.formData.previous_section || this.formData.previous_section.trim() === ''){
                 this.errors.previous_section = "Previous section is required";
             }

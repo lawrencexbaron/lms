@@ -10,4 +10,10 @@ class Student extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function grade()
+    {
+        return $this->belongsTo(Grade::class, 'grade_level_id');
+    }
+    
 }

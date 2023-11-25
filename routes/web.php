@@ -30,6 +30,7 @@ Route::get('/sections/getsections', [SectionController::class, 'getSections'])->
 Route::get('/enroll-now', [EnrollController::class, 'enroll'])->name('enroll.index');
 
 Route::post('/enroll', [EnrollController::class, 'enrollPost'])->name('enroll.post');
+Route::get('/enroll/success/{id}', [EnrollController::class, 'EnrollSuccess'])->name('enroll.success');
 
 
 Route::middleware('auth')->group(function () {
@@ -62,6 +63,7 @@ Route::middleware('auth')->group(function () {
 
     // Enroll Routes
     Route::get('/enrolled', [EnrollController::class, 'enrolled'])->name('enrolled.index');
+    
     // Route::post('/enroll', [EnrollController::class, 'enrollPost'])->name('enroll.post');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
