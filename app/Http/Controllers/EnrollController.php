@@ -40,6 +40,44 @@ class EnrollController extends Controller
         ], compact('student'));
     }
 
+    public function EnrolledStudents(Request $request, $id) : JsonResponse
+    {
+        try{
+            // get url parameters
+            $grade = Grade::where('id', $id)->firstOrFail();
+
+            // get students
+            $students = Student::where('grade_level_id', $grade->id)->get();
+
+            // return response
+            return response()->json([
+                'success' => true,
+                'data' => $students,
+                'message' => 'Successfully fetched enrolled students.',
+            ]);
+        }catch(Exception $e){
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage(),
+                'errors' => $e->errors(),
+                'message' => 'Failed to fetch enrolled students.',
+            ], 500);
+        }
+    }
+
+    public function EnrolledStudentsView(Request $request, $id) : View
+    {
+        // get url parameters
+        $grade = Grade::where('id', $id)->firstOrFail();
+
+        // get students
+        $students = Student::where('grade_level_id', $grade->id)->get();
+
+        return view('enroll.enrolled', [
+            'user' => $request->user(),
+        ], compact('students', 'grade'));
+    }
+
     public function enrollPost(Request $request) : JsonResponse
     {
         try{
