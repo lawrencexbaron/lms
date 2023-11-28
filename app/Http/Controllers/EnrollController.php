@@ -40,21 +40,51 @@ class EnrollController extends Controller
         ], compact('student'));
     }
 
-    public function EnrolledStudents(Request $request, $id) : JsonResponse
+    public function EnrolledStudents(Request $request) : JsonResponse
     {
         try{
+            $search = $request->search ?? '';
+            $page = $request->page ?? 1;
+            $show = $request->show ?? 5;
+            $id = $request->id ?? 1;
+
             // get url parameters
             $grade = Grade::where('id', $id)->firstOrFail();
 
             // get students
-            $students = Student::where('grade_level_id', $grade->id)->get();
+            $students = Student::where('grade_level_id', $grade->id)
+                ->where(function ($query) use ($search) {
+                    $query->where('grade_level_id', 'like', '%' . $search . '%')
+                        ->orWhere('student_number', 'like', '%' . $search . '%')
+                        ->orWhere('lrn', 'like', '%' . $search . '%')
+                        ->orWhere('psa_no', 'like', '%' . $search . '%')
+                        ->orWhere('learner_status', 'like', '%' . $search . '%')
+                        ->orWhere('first_name', 'like', '%' . $search . '%')
+                        ->orWhere('middle_name', 'like', '%' . $search . '%')
+                        ->orWhere('last_name', 'like', '%' . $search . '%')
+                        ->orWhere('suffix', 'like', '%' . $search . '%')
+                        ->orWhere('gender', 'like', '%' . $search . '%')
+                        ->orWhere('student_type', 'like', '%' . $search . '%')
+                        ->orWhereHas('grade', function ($query) use ($search) {
+                            $query->where('name', 'like', '%' . $search . '%');
+                        })
+                        ->orWhereHas('section', function ($query) use ($search) {
+                            $query->where('name', 'like', '%' . $search . '%');
+                        });
+                })
+                ->with('grade', 'section')
+                ->paginate($show, ['*'], 'page', $page);
+            
+            $response = [
+                'students' => $students->items(),
+                'total' => $students->total(),
+                'total_pages' => $students->lastPage(),
+                'current_page' => $students->currentPage(),
+            ];
 
             // return response
-            return response()->json([
-                'success' => true,
-                'data' => $students,
-                'message' => 'Successfully fetched enrolled students.',
-            ]);
+            return response()->json($response);
+
         }catch(Exception $e){
             return response()->json([
                 'success' => false,
@@ -72,6 +102,7 @@ class EnrollController extends Controller
 
         // get students
         $students = Student::where('grade_level_id', $grade->id)->get();
+        
 
         return view('enroll.enrolled', [
             'user' => $request->user(),

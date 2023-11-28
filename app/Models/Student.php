@@ -15,5 +15,9 @@ class Student extends Model
     {
         return $this->belongsTo(Grade::class, 'grade_level_id');
     }
+    public function section()
+    {
+        return $this->belongsTo(Section::class, 'section_id');
+    }
     
 }

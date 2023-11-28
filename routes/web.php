@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\EnrollController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GradeLevelController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,20 +23,23 @@ Route::get('/', function () {
     return redirect(route('login'));
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/sections/getsections', [SectionController::class, 'getSections'])->name('section.getSections');
 Route::get('/enroll-now', [EnrollController::class, 'enroll'])->name('enroll.index');
 
 Route::post('/enroll', [EnrollController::class, 'enrollPost'])->name('enroll.post');
 Route::get('/enroll/success/{id}', [EnrollController::class, 'EnrollSuccess'])->name('enroll.success');
-Route::get('/enrolled/students/{id}', [EnrollController::class, 'EnrolledStudents'])->name('enrolled.students');
+Route::get('/enrolled/students', [EnrollController::class, 'EnrolledStudents'])->name('enrolled.students');
+Route::get('/getgrades', [GradeLevelController::class, 'GetGrades'])->name('grades');
 
 
 
 Route::middleware('auth')->group(function () {
+    // dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     // Section Routes
     Route::get('/sections', [SectionController::class, 'index'])->name('sections.index');
     Route::get('/sections/create', [SectionController::class, 'create'])->name('section.create');
@@ -65,7 +69,7 @@ Route::middleware('auth')->group(function () {
 
     // Enroll Routes
     Route::get('/enrolled', [EnrollController::class, 'enrolled'])->name('enrolled.index');
-    Route::get('/enrolled/students/{id}', [EnrollController::class, 'EnrolledStudents'])->name('enrolled.students');
+    // Route::get('/enrolled/students/{id}', [EnrollController::class, 'EnrolledStudents'])->name('enrolled.students');
     Route::get('/enrolled/students/view/{id}', [EnrollController::class, 'EnrolledStudentsView'])->name('enrolled.students.view');
     
     // Route::post('/enroll', [EnrollController::class, 'enrollPost'])->name('enroll.post');
