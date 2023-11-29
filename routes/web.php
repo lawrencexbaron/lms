@@ -5,6 +5,7 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\EnrollController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GradeLevelController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -48,7 +49,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/sections/edit/{section}', [SectionController::class, 'edit'])->name('section.edit');
     Route::put('/sections/update/{section}', [SectionController::class, 'update'])->name('section.update');
     Route::get('/sections/{section}', [SectionController::class, 'show'])->name('section.show');
+    Route::get('/sections/view/{section}', [SectionController::class, 'SectionsView'])->name('section.view');
     // Route::get('/sections/getsections', [SectionController::class, 'getSections'])->name('section.getSections');
+
+    // Student Routes
+    Route::get('/student/{student}', [StudentController::class, 'show'])->name('student.show');
 
     // Room Routes
     Route::get('/grades/rooms', [GradeLevelController::class, 'index'])->name('graderoom.index');

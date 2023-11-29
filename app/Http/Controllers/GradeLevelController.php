@@ -68,6 +68,13 @@ class GradeLevelController extends Controller
         return response()->json($response);
     }
 
+    public function GetGrades(Request $request){
+        
+        $grades = Grade::all();
+
+        return response()->json($grades); 
+    }
+
     public function GetGradeLevels(Request $request){
         $search = $request->search ?? '';
         $page = $request->page ?? 1;
@@ -152,14 +159,6 @@ class GradeLevelController extends Controller
     public function ViewRoom($id){
         $room = Room::find($id);
         return view('graderoom.view-room', compact('room'));
-    }
-
-    public function getGrades(){
-        $grades = Grade::all();
-        
-        return response()->json([
-            'grades' => $grades
-        ]);
     }
 
 }

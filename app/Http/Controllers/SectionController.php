@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Section;
 use App\Models\Grade;
+use App\Models\Student;
 use App\Models\SchoolYear;
 use App\Models\Room;
 
@@ -39,6 +40,12 @@ class SectionController extends Controller
 
         return view('section.index', compact('sections'));
 
+    }
+    public function SectionsView(Request $request, $id){
+        $section = Section::with('grade', 'schoolyear', 'adviser', 'room', 'students')->findOrFail($id);
+        $students = Student::where('section_id', $id)->where('grade_level_id', $section->grade_level_id)->get();
+
+        return view('section.view', compact('section', 'students'));
     }
 
     public function getSections(Request $request){

@@ -9,6 +9,7 @@ use App\Models\Student;
 use App\Models\StudentParent;
 use App\Models\StudentAddress;
 use App\Models\Grade;
+use App\Models\StudentModule;
 
 class EnrollController extends Controller
 {
@@ -52,7 +53,7 @@ class EnrollController extends Controller
             $grade = Grade::where('id', $id)->firstOrFail();
 
             // get students
-            $students = Student::where('grade_level_id', $grade->id)
+            $students = Student::where('grade_level_id', $id)
                 ->where(function ($query) use ($search) {
                     $query->where('grade_level_id', 'like', '%' . $search . '%')
                         ->orWhere('student_number', 'like', '%' . $search . '%')
@@ -101,7 +102,7 @@ class EnrollController extends Controller
         $grade = Grade::where('id', $id)->firstOrFail();
 
         // get students
-        $students = Student::where('grade_level_id', $grade->id)->get();
+        $students = Student::where('grade_level_id', $id)->get();
         
 
         return view('enroll.enrolled', [
@@ -146,6 +147,8 @@ class EnrollController extends Controller
                 'previous_section' => 'required|string',
             ]);
 
+            // convert learning modules to integer array
+
             // create student
             $student = new Student();
             $student->student_number = 'STU-'.rand(100000, 999999);
@@ -167,7 +170,7 @@ class EnrollController extends Controller
             $student->previous_section = $validate['previous_section'] ?? null;
             $student->mother_tongue = $validate['mother_tongue'];
             $student->gwa = $validate['gwa'];
-            $student->learning_modules = json_encode($validate['learning_modules']);
+            // $student->learning_modules = json_encode($validate['learning_modules']);
             $student->save();
 
             // create student address
@@ -189,6 +192,14 @@ class EnrollController extends Controller
             $studentParent->guardian_name = $validate['guardian_name'];
             $studentParent->guardian_contact_number = $validate['guardian_contact_number'];
             $studentParent->save();
+
+            // create student modules
+            foreach ($validate['learning_modules'] as $module) {
+                $studentModule = new StudentModule();
+                $studentModule->student_id = $student->id;
+                $studentModule->module_id = $module;
+                $studentModule->save();
+            }
 
             // return response
             return response()->json([
