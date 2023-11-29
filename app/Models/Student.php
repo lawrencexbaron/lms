@@ -9,7 +9,7 @@ class Student extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $guarded = [];    
 
     public function grade()
     {
@@ -19,5 +19,16 @@ class Student extends Model
     {
         return $this->belongsTo(Section::class, 'section_id');
     }
-    
+    public function parent()
+    {
+        return $this->hasOne(StudentParent::class, 'student_id');
+    }
+    public function address()
+    {
+        return $this->hasOne(StudentAddress::class, 'student_id');
+    }
+    public function modules()
+    {
+        return $this->hasMany(StudentModule::class, 'student_id');
+    }
 }
