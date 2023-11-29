@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Enrolled') }}
+            {{ __('Sections') }}
         </h2>
     </x-slot>
 
@@ -10,7 +10,32 @@
             <div class="bg-white flex flex-col border rounded shadow-sm mt-2 overflow-y-auto">
                 <div class="border-b px-3 py-2">
                     <p class="text-md font-medium">
-                        All {{ $grade->name }} Students
+                        All {{ $section->name }} Students
+                    </p>
+                </div>
+                <div class="my-2 gap-1.5 flex p-5 justify-end">
+                    <x-primary-button href="{{ route('sections.index') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z" />
+                        </svg>                          
+                        Print Information
+                    </x-primary-button>
+                    <x-secondary-button href="{{ route('sections.index') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                        </svg>                          
+                        Print to Excel
+                    </x-secondary-button>
+                </div>
+                <div class="my-2 p-5 flex-col gap-1.5 flex items-center text-center justify-center">
+                    <p class="text-2xl font-bold">
+                        {{ $section->adviser->first_name }} {{ $section->adviser->last_name }}
+                    </p>
+                    <p class="text-lg font-medium">
+                        {{ $section->grade->name }} - {{ $section->name }}
+                    </p>
+                    <p class="text-md">
+                        {{ $section->room->code}}
                     </p>
                 </div>
                 <div class="px-5 py-5 overflow-y-auto">
@@ -38,8 +63,6 @@
                                     <th class="px-3 py-2 uppercase text-sm">Name</th>
                                     <th class="px-3 py-2 uppercase text-sm">Gender</th>
                                     <th class="px-3 py-2 uppercase text-sm">Type</th>
-                                    <th class="px-3 py-2 uppercase text-sm">Section</th>
-                                    <th class="px-3 py-2 uppercase text-sm">Date Enrolled</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -52,23 +75,7 @@
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                                     </svg>
-                                                    <p>View</p>
-                                                </a>
-                                            </div>
-                                            <div @click="editStudent(student.id)" class="px-2 py-1 bg-white border text-sm flex my-auto items-center gap-1 cursor-pointer hover:border-gray-400 transition">
-                                                <a class="flex my-auto items-center gap-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                                                    </svg>                                              
-                                                    <p>Edit</p>
-                                                </a>
-                                            </div>
-                                            <div @click="deleteStudent(student.id)" class="px-2 py-1 bg-white border text-sm flex my-auto items-center gap-1 cursor-pointer hover:border-gray-400 transition">
-                                                <a class="flex my-auto items-center gap-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
-                                                    </svg>                                              
-                                                    <p>Delete</p>
+                                                    <p>Profile</p>
                                                 </a>
                                             </div>
                                         </td>
@@ -76,8 +83,6 @@
                                         <td x-text="`${student.last_name}, ${student.first_name}`" class="px-3 py-2"></td>
                                         <td x-text="student.gender" class="px-3 py-2 capitalize"></td>
                                         <td x-text="student.student_type" class="px-3 py-2 capitalize"></td>
-                                        <td x-text="student.section && student.section.name ? student.section.name : 'N/A'" class="px-3 py-2"></td>
-                                        <td x-text="new Date(student.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })" class="px-3 py-2"></td>
                                     </tr>
                                 </template>
                                 <tr x-show="students.length === 0" class="text-center border-b hover:bg-gray-50 text-sm">
@@ -136,7 +141,7 @@
             total : 0,
             total_pages : 0,
             curent_page : 0,
-            id: @json($grade->id),
+            id: @json($section->grade_level_id),
 
             nextPage(){
                 if(this.page < this.total_pages){
