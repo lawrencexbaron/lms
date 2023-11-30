@@ -219,7 +219,7 @@
             },
             viewSection(id){
                 // redirect to view page
-                window.location.href = '/sections/' + id;
+                window.location.href = '/sections/view/' + id;
             },
 
             fetchSections(){
