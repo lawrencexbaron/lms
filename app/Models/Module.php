@@ -16,4 +16,5 @@ class Module extends Model
         return $this->belongsToMany(Student::class);
     }
 
+
 }

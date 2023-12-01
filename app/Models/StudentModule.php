@@ -33,4 +33,9 @@ class StudentModule extends Model
         return self::MODULES_DISPLAY[$this->module_id];
     }
 
+    public function module()
+    {
+        return $this->belongsTo(Module::class, 'module_id');
+    }
+
 }
