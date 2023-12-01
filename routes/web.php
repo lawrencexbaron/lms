@@ -54,6 +54,8 @@ Route::middleware('auth')->group(function () {
 
     // Student Routes
     Route::get('/student/{student}', [StudentController::class, 'show'])->name('student.show');
+    Route::post('/student/{student}/update', [StudentController::class, 'update'])->name('student.update');
+    Route::delete('/student/{student}', [StudentController::class, 'destroy'])->name('student.destroy');
 
     // Room Routes
     Route::get('/grades/rooms', [GradeLevelController::class, 'index'])->name('graderoom.index');
