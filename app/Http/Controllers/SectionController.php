@@ -133,7 +133,8 @@ class SectionController extends Controller
     {
         //
         $section = Section::findOrFail($id)->with('grade', 'schoolyear', 'adviser', 'room')->first();
-        return view('section.show', compact('section'));
+        $grades = Grade::all();
+        return view('section.show', compact('section', 'grades'));
     }
 
     /**

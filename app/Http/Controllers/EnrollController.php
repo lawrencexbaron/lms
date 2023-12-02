@@ -15,7 +15,7 @@ class EnrollController extends Controller
 {
     //
     public function enrolled(Request $request) : View
-    {
+    {   
         return view('enroll.index', [
             'user' => $request->user(),
         ]);
@@ -32,7 +32,6 @@ class EnrollController extends Controller
 
     public function EnrollSuccess(Request $request, $id) : View
     {
-    
         // get url parameters
         $student = Student::where('student_number', $id)->with('grade')->firstOrFail();
 
