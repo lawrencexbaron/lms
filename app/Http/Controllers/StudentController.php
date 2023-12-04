@@ -69,6 +69,13 @@ class StudentController extends Controller
         $student = Student::findOrFail($id);
         $student->delete();
 
-        return redirect()->back()->with('success', 'Student deleted successfully');
+        return redirect()->route('section.view', ['section' => $student->section_id])->with('status', 'Student archived successfully');
+    }
+
+    public function archive($id){
+        $student = Student::findOrFail($id);
+        $student->delete();
+
+        return redirect()->back()->with('success', 'Student archived successfully');
     }
 }
