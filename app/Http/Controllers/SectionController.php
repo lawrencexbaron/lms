@@ -9,6 +9,7 @@ use App\Models\Grade;
 use App\Models\Student;
 use App\Models\SchoolYear;
 use App\Models\Room;
+use Illuminate\Support\Facades\View;
 
 class SectionController extends Controller
 {
@@ -17,9 +18,6 @@ class SectionController extends Controller
      */
     public function index(Request $request)
     {
-        //
-        // $sections = Section::orderBy('name', 'desc')->with('grade', 'schoolyear')->get();
-
         // retrieve search term, page and limit from url
         $search = $request->search ?? '';
         $page = $request->page ?? 1;
@@ -37,6 +35,7 @@ class SectionController extends Controller
         if ($request->ajax()) {
             return view('section.table', compact('sections'));
         }
+        $this->setAppName(1, 'Sections');
 
         return view('section.index', compact('sections'));
 
@@ -44,6 +43,8 @@ class SectionController extends Controller
     public function SectionsView(Request $request, $id){
         $section = Section::with('grade', 'schoolyear', 'adviser', 'room', 'students')->findOrFail($id);
         $students = Student::where('section_id', $id)->where('grade_level_id', $section->grade_level_id)->get();
+
+        $this->setAppName(1, 'Sections');
 
         return view('section.view', compact('section', 'students'));
     }
@@ -134,6 +135,7 @@ class SectionController extends Controller
         //
         $section = Section::findOrFail($id)->with('grade', 'schoolyear', 'adviser', 'room')->first();
         $grades = Grade::all();
+
         return view('section.show', compact('section', 'grades'));
     }
 

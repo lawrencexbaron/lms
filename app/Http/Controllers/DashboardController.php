@@ -13,6 +13,7 @@ class DashboardController extends Controller
         $enrolled = Student::where('section_id', '!=', null)->count();
         $sections = Section::all()->count();
         $enrollees_today = Student::whereDate('created_at', date('Y-m-d'))->count();
+        $this->setAppName(1, 'Dashboard');
         
         return view('dashboard', compact('enrolled', 'sections', 'enrollees_today'));
     }

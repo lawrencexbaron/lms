@@ -100,6 +100,8 @@ class EnrollController extends Controller
         // get url parameters
         $grade = Grade::where('id', $id)->firstOrFail();
 
+        $this->setAppName(1, $grade->name);
+
         // get students
         $students = Student::where('grade_level_id', $id)->get();
         
