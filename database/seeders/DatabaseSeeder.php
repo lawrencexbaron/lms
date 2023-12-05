@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             SchoolYearSeeder::class,
             GradeSeeder::class,
             ModuleSeeder::class,
+            SettingsSeeder::class,
         ]);
     }
 }
