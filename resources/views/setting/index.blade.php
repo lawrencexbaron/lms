@@ -1,46 +1,125 @@
 <x-app-layout>
 
 <div class="py-12">
-    <div class="max-w-5xl flex flex-col mx-auto sm:px-6 lg:px-8">
+    <div class="max-w-4xl flex flex-col mx-auto sm:px-4 lg:px-8">
+        @if(session()->has('success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                <strong class="font-bold">{{ session()->get('success') }}</strong>
+            </div>
+        @endif
         <div class="bg-white flex flex-col border rounded shadow-sm mt-2 overflow-y-auto">
             <div class="border-b px-3 py-2">
                 <p class="text-md font-medium">
                     {{ __('Settings') }}
                 </p>
             </div>
-            <div class="p-5 overflow-y-auto flex flex-col gap-1">
-                <div class="flex flex-col">
-                    <x-input-label for="name" :value="__('System Name')" />
-                    <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" disabled />
-                </div>
-                <div class="flex flex-col">
-                    <x-input-label for="email" :value="__('System Email')" />
-                    <x-text-input id="email" class="block mt-1 w-full" type="text" name="email" disabled />
-                </div>
-                <div class="flex flex-col">
-                    <x-input-label for="logo" :value="__('Logo')" />
-                    <x-text-input id="logo" class="block mt-1 w-full" type="text" name="logo" disabled />
-                </div>
-                <div class="flex flex-col">
-                    <x-input-label for="favicon" :value="__('Favicon')" />
-                    <x-text-input id="favicon" class="block mt-1 w-full" type="text" name="favicon" disabled />
-                </div>
-                <div class="flex flex-col">
-                    <x-input-label for="address" :value="__('Address')" />
-                    <x-text-input id="address" class="block mt-1 w-full" type="text" name="address" disabled />
-                </div>
-                <div class="flex flex-col">
-                    <x-input-label for="phone" :value="__('Phone')" />
-                    <x-text-input id="phone" class="block mt-1 w-full" type="text" name="phone" disabled />
-                </div>
-                <div class="flex justify-end w-full mt-1">
-                    <x-primary-button class="ml-3">
-                        {{ __('Save') }}
-                    </x-primary-button>
-                </div>
+            <div class="p-5 overflow-y-auto flex flex-col gap-1" x-data="Setting()">
+                <form action="{{ route('settings.update') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="flex flex-col sm:flex-row border-b py-2 my-auto">
+                        <x-input-label class="sm:w-1/4 my-auto" for="system_name" :value="__('System Name')" />
+                        <div class="flex flex-col w-full">
+                            <x-text-input id="system_name" class="block mt-1 w-full sm:w-3/4" type="text" name="system_name" value="{{ $app_name }}" />
+                            <x-input-error :messages="$errors->get('system_name')" class="mt-1" />
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row border-b py-2 my-auto">
+                        <x-input-label class="sm:w-1/4 my-auto" for="name" :value="__('System Title')" />
+                        <div class="flex flex-col w-full">
+                            <x-text-input id="name" class="block mt-1 w-full sm:w-3/4" type="text" name="system_title" value="{{ $setting->system_title }}" />
+                            <x-input-error :messages="$errors->get('system_title')" class="mt-1" />
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row border-b py-2 my-auto">
+                        <x-input-label class="sm:w-1/4 my-auto" for="email" :value="__('System Email')" />
+                        <div class="flex flex-col w-full">
+                            <x-text-input id="email" class="block mt-1 w-full sm:w-3/4" type="text" name="system_email" value="{{ $setting->system_email }}" />
+                            <x-input-error :messages="$errors->get('system_email')" class="mt-1" />
+                        </div>
+                    </div>
+                    <div class="flex justify-between sm:justify-normal sm:flex-row border-b py-2 my-auto">
+                        <x-input-label class="sm:w-1/4 my-auto" for="logo" :value="__('Logo')" />
+                        <x-text-input @change="onLogoChange()" id="logo" class=" mt-1 w-full sm:w-3/4 hidden" type="file" name="logo" value="{{ $setting->logo }}" />
+                        <div class="flex">
+                            <img id="logo_logo" @click="onLogoClick()" src="{{ asset('storage/'.$setting->logo) }}" alt="logo" class="w-20 h-20 rounded-full object-cover hover:cursor-pointer hover:opacity-90 transition-all" />
+                            
+                        </div>
+                        <x-input-error :messages="$errors->get('logo')" class="mt-1 w-1/4" />
+                    </div>
+                    <div class="flex justify-between sm:justify-normal sm:flex-row border-b py-2 my-auto">
+                        <x-input-label class="sm:w-1/4 my-auto" for="favicon" :value="__('Favicon')" />
+                        <x-text-input @change="onFaviconChange()" id="favicon" class=" mt-1 w-full sm:w-3/4 hidden" type="file" name="favicon" value="{{ $setting->favicon }}" />
+                        <div class="flex">
+                            <img id="favicon_logo" @click="onFaviconClick()" src="{{ asset('storage/'.$setting->favicon) }}" alt="favicon" class="w-20 h-20 rounded-full object-cover hover:cursor-pointer hover:opacity-90 transition-all" />
+                            
+                        </div>
+                        <x-input-error :messages="$errors->get('favicon')" class="mt-1 w-1/4" />
+                    </div>
+                    <div class="flex flex-col sm:flex-row border-b py-2 my-auto">
+                        <x-input-label class="sm:w-1/4 my-auto" for="address" :value="__('Address')" />
+                        <div class="flex flex-col w-full justify-between">
+                            <x-text-input id="address" class="block mt-1 w-full sm:w-3/4" type="text" name="address" value="{{ $setting->address }}" />
+                            <x-input-error :messages="$errors->get('address')" class="mt-1" />
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row border-b py-2 my-auto">
+                        <x-input-label class="sm:w-1/4 my-auto font-semibold" for="phone" :value="__('Phone')" />
+                        <div class="flex flex-col w-full">
+                            <x-text-input id="phone" class="block mt-1 w-full sm:w-3/4" type="text" name="phone" value="{{ $setting->phone }}" />
+                            <x-input-error :messages="$errors->get('phone')" class="mt-1" />
+                        </div>
+                    </div>
+                    <div class="flex justify-end w-full mt-1">
+                        <x-primary-button type="submit" class="ml-3">
+                            {{ __('Save') }}
+                        </x-primary-button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
 </x-app-layout>
+
+
+<script>
+    function Setting(){
+        return {
+            logo: null,
+            favicon: null,
+            init(){
+                this.logo = document.getElementById('logo').files[0];
+                this.favicon = document.getElementById('favicon').files[0];
+            },
+            onLogoChange(){
+                this.logo = document.getElementById('logo').files[0];
+                // override the src of the image
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('logo_logo').src = e.target.result;
+                }
+                reader.readAsDataURL(this.logo);
+
+            },
+
+            onFaviconChange(){
+                this.favicon = document.getElementById('favicon').files[0];
+                // override the src of the image
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('favicon_logo').src = e.target.result;
+                }
+                reader.readAsDataURL(this.favicon);
+
+            },
+            onLogoClick(){
+                document.getElementById('logo').click();
+            },
+            onFaviconClick(){
+                document.getElementById('favicon').click();
+            }
+        }
+    }
+
+</script>

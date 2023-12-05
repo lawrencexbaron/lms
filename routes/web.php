@@ -36,6 +36,7 @@ Route::post('/enroll', [EnrollController::class, 'enrollPost'])->name('enroll.po
 Route::get('/enroll/success/{id}', [EnrollController::class, 'EnrollSuccess'])->name('enroll.success');
 Route::get('/enrolled/students', [EnrollController::class, 'EnrolledStudents'])->name('enrolled.students');
 Route::get('/getgrades', [GradeLevelController::class, 'GetGrades'])->name('grades');
+Route::get('/getsettings', [SettingsController::class, 'getSetting'])->name('settings');
 
 
 
@@ -88,6 +89,7 @@ Route::middleware('auth')->group(function () {
 
     // Settings
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
 });
 
 require __DIR__.'/auth.php';
