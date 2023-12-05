@@ -9,11 +9,11 @@
         <div class="max-w-7xl flex gap-2 mx-auto sm:px-6 lg:px-8">
             <div x-data="GradeDataTable()" x-init="fetchGrades" class="flex w-full flex-col space-y-2">
                 @if(session()->has('gradesuccess'))
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                    <div x-cloak class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
                         <strong class="font-bold">{{ session()->get('gradesuccess') }}</strong>
                     </div>
                 @endif
-                <div x-show="message" class="bg-green-100 border flex justify-between border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                <div x-cloak x-show="message" class="bg-green-100 border flex justify-between border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
                     <strong class="font-bold" x-text="message"></strong>
                     <svg @click="message = null" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -133,11 +133,11 @@
             </div>
             <div x-data="RoomDataTable()" x-init="fetchRooms" class="flex flex-col w-full space-y-2">
                 @if(session()->has('roomsuccess'))
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                    <div x-cloak class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
                         <strong class="font-bold">{{ session()->get('roomsuccess') }}</strong>
                     </div>
                 @endif
-                <div x-show="message" class="bg-green-100 border flex justify-between border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                <div x-cloak x-show="message" class="bg-green-100 border flex justify-between border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
                     <strong class="font-bold" x-text="message"></strong>
                     <svg @click="message = null" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />

@@ -8,11 +8,11 @@
     <div class="py-12" x-data="dataTable()" x-init="fetchSections()">
         <div class="max-w-7xl flex flex-col mx-auto sm:px-6 lg:px-8">
             @if(session()->has('status'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                <div x-cloak class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
                     <strong class="font-bold">{{ session()->get('status') }}</strong>
                 </div>
             @endif
-            <div x-show="message" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <div x-cloak x-show="message" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
                 <strong class="font-bold" x-text="message"></strong>
             </div>
             <div class="my-1 justify-end flex">

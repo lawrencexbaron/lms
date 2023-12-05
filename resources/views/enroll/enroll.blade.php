@@ -237,34 +237,12 @@
                                     <span x-show="hasError('learning_modules')" x-text="getError('learning_modules')" class="text-red-500 text-xs"></span>
                                     <x-input-label for="lrn" :value="__('Learning Modules')" />
                                     <div class="grid grid-cols-2 gap-2 my-4">
-                                        <div class="flex gap-2 items-center">
-                                            <input @focus="clearError('learning_modules')" type="checkbox" x-model="formData.learning_modules" value="modular_printed" name="modular" id="modular" class="border-gray-300 rounded-md" />
-                                            <x-input-label for="modular" :value="__('Modular (Printed)')" />
-                                        </div>
-                                        <div class="flex gap-2 items-center">
-                                            <input @focus="clearError('learning_modules')" type="checkbox" x-model="formData.learning_modules" value="modular_digital" name="modular" id="modular" class="border-gray-300 rounded-md" />
-                                            <x-input-label for="modular" :value="__('Modular (Digital)')" />
-                                        </div>
-                                        <div class="flex gap-2 items-center">
-                                            <input @focus="clearError('learning_modules')" type="checkbox" x-model="formData.learning_modules" value="online" name="online" id="online" class="border-gray-300 rounded-md" />
-                                            <x-input-label for="online" :value="__('Online')" />
-                                        </div>
-                                        <div class="flex gap-2 items-center">
-                                            <input @focus="clearError('learning_modules')" type="checkbox" x-model="formData.learning_modules" value="tv" name="tv" id="tv" class="border-gray-300 rounded-md" />
-                                            <x-input-label for="tv" :value="__('Educational Television')" />
-                                        </div>
-                                        <div class="flex gap-2 items-center">
-                                            <input @focus="clearError('learning_modules')" type="checkbox" x-model="formData.learning_modules" value="radio" name="radio" id="radio" class="border-gray-300 rounded-md" />
-                                            <x-input-label for="radio" :value="__('Radio-based Instruction')" />
-                                        </div>
-                                        <div class="flex gap-2 items-center">
-                                            <input @focus="clearError('learning_modules')" type="checkbox" x-model="formData.learning_modules" value="blended" name="blended" id="blended" class="border-gray-300 rounded-md" />
-                                            <x-input-label for="blended" :value="__('Blended')" />
-                                        </div>
-                                        <div class="flex gap-2 items-center">
-                                            <input @focus="clearError('learning_modules')" type="checkbox" x-model="formData.learning_modules" value="facetoface" name="facetoface" id="facetoface" class="border-gray-300 rounded-md" />
-                                            <x-input-label for="facetoface" :value="__('Face to face')" />
-                                        </div>
+                                        @foreach(\App\Models\StudentModule::MODULES_DISPLAY as $moduleId => $moduleName)
+                                            <div class="flex gap-2 items-center">
+                                                <input @focus="clearError('learning_modules')" type="checkbox" x-model="formData.learning_modules" value="{{ $moduleId }}" name="{{ $moduleName }}" id="{{ $moduleName }}" class="border-gray-300 rounded-md" />
+                                                <x-input-label :for="$moduleName" :value="__($moduleName)" />
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
