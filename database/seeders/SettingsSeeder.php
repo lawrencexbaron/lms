@@ -20,6 +20,7 @@ class SettingsSeeder extends Seeder
             'system_title' => 'Enhanced Enrollment System',
             'logo' => 'uploads/logo.png',
             'favicon' => 'uploads/favicon.png',
+            'background' => 'uploads/background.png',
             'school_year_id' => 3,
             'address' => 'Navotas City',
             'phone' => '09123456789',
