@@ -10,9 +10,36 @@ use App\Models\Student;
 use App\Models\SchoolYear;
 use App\Models\Room;
 use Illuminate\Support\Facades\View;
+use App\Exports\SectionExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Dompdf\Dompdf;
+use PDF;
+use App\Models\Setting;
 
 class SectionController extends Controller
 {
+    public function exportExcel(Request $request) 
+    {
+        $section_id = $request->query('section_id');
+        $section = Section::findOrFail($section_id);
+        // export to xlsx add the section name to the filename
+        return Excel::download(new SectionExport($section_id), 'Section-' . $section->id . '-' . $section->name . '.xlsx');
+        
+    }
+
+    public function exportPDF(Request $request) 
+    {
+        $section_id = $request->query('section_id');
+        $section = Section::with('grade', 'adviser')->findOrFail($section_id);
+        $setting = Setting::first();
+
+        $students = Student::where('section_id', $section_id)->with('grade', 'section')->get();
+
+        $pdf = \PDF::loadView('pdf.section', compact('section', 'students', 'setting'));
+        return $pdf->download('Section-' . $section->id . '-' . $section->name . '.pdf');
+
+    }
+
     /**
      * Display a listing of the resource.
      */

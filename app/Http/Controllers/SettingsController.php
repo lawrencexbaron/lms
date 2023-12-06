@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Setting;
 use App\Services\ImageService;
+use App\Models\SchoolYear;
 
 class SettingsController extends Controller
 {
@@ -17,8 +18,10 @@ class SettingsController extends Controller
     {
         $setting = Setting::first();
         $app_name = $this->replaceUnderscoreToWhiteSpaces(env('APP_NAME'));
+        $school_years = SchoolYear::all();
+
         $this->setAppName($app_name . ' - Settings');
-        return view('setting.index', compact('setting', 'app_name'));
+        return view('setting.index', compact('setting', 'app_name', 'school_years'));
     }
 
     public function getSetting()
@@ -35,7 +38,9 @@ class SettingsController extends Controller
             'system_email' => 'required|email',
             'system_title' => 'required',
             'address' => 'sometimes',
-            'phone' => 'sometimes',
+            'school_year' => 'sometimes|exists:school_years,id',
+            // validate phone for 11 digits and starts with 09
+            'phone' => 'sometimes|nullable|digits:11|regex:/(09)[0-9]{9}/',        
             'logo' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             // validate favicon size 16x16 for min and max of 32x32
             'favicon' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048|dimensions:min_width=16,min_height=16,max_width=32,max_height=32',
@@ -66,13 +71,20 @@ class SettingsController extends Controller
             $favicon = $this->imageService->upload($request->favicon, 'uploads', 'public', 'favicon');
         }
 
-       
+        if ($request->hasFile('background')) {
+            $this->imageService->delete($setting->background);
+            $background = $this->imageService->upload($request->background, 'uploads', 'public', 'background');
+        }
+
+
         $setting->system_name = $request->system_name;
         $setting->system_email = $request->system_email;
         $setting->logo = $logo ?? $setting->logo;
         $setting->favicon = $favicon ?? $setting->favicon;
         $setting->system_title = $request->system_title;
         $setting->address = $request->address;
+        $setting->background_logo = $background ?? $setting->background;
+        $setting->school_year_id = $request->school_year;
         $setting->phone = $request->phone;
         $setting->save();
         

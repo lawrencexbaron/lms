@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Module;
 use App\Models\Grade;
+use App\Models\Section;
 
 class StudentController extends Controller
 {
@@ -15,8 +16,17 @@ class StudentController extends Controller
         $student = Student::with('parent', 'address', 'modules', 'modules')->findOrfail($id);
         $modules = Module::all();
         $grades = Grade::all();
+        $sections = Section::all();
 
-        return view('student.show', compact('student', 'modules', 'grades'));
+        return view('student.show', compact('student', 'modules', 'grades', 'sections'));
+    }
+
+    public function edit($id){
+        $student = Student::with('parent', 'address', 'modules')->findOrfail($id);
+        $modules = Module::all();
+        $grades = Grade::all();
+
+        return view('student.edit', compact('student', 'modules', 'grades'));
     }
 
     public function update(Request $request, $id){
@@ -28,7 +38,7 @@ class StudentController extends Controller
         $student->first_name = $request->first_name;
         $student->middle_name = $request->middle_name;
         $student->last_name = $request->last_name;
-        $student->suffix = $request->extension_name;
+        $student->suffix = $request->suffix;
         $student->birthdate = $request->date_of_birth;
         $student->student_type = $request->student_type;
         $student->gender = $request->gender;
@@ -37,6 +47,7 @@ class StudentController extends Controller
         $student->previous_sy_attended = $request->previous_sy_attended;
         $student->previous_level = $request->previous_level;
         $student->previous_section = $request->previous_section;
+        $student->section_id = $request->section;
         $student->mother_tongue = $request->mother_tongue;
         $student->gwa = $request->gwa;
 

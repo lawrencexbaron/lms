@@ -16,7 +16,7 @@ class ImageService{
         $extension = 'png'; // Set the desired extension to PNG
         $filename = pathinfo($name, PATHINFO_FILENAME);
         $filename = Str::slug($filename);
-        $filename = ($type === 'logo') ? 'logo' : 'favicon';
+        $filename = ($type === 'logo') ? 'logo' : (($type === 'background') ? 'background' : 'favicon');
         $filename .= '.' . $extension;
 
         // Create the directory if it doesn't exist

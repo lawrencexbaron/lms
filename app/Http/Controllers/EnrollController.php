@@ -10,6 +10,8 @@ use App\Models\StudentParent;
 use App\Models\StudentAddress;
 use App\Models\Grade;
 use App\Models\StudentModule;
+use App\Models\Setting;
+use Exception;
 
 class EnrollController extends Controller
 {
@@ -24,10 +26,11 @@ class EnrollController extends Controller
     public function enroll(Request $request) : View
     {
         $grades = Grade::all();
+        $settings = Setting::with('school_year')->first();
 
         return view('enroll.enroll', [
             'user' => $request->user(),
-        ], compact('grades'));
+        ], compact('grades', 'settings'));
     }
 
     public function EnrollSuccess(Request $request, $id) : View
@@ -35,9 +38,11 @@ class EnrollController extends Controller
         // get url parameters
         $student = Student::where('student_number', $id)->with('grade')->firstOrFail();
 
+        $settings = Setting::first();
+
         return view('enroll.success', [
             'user' => $request->user(),
-        ], compact('student'));
+        ], compact('student', 'settings'));
     }
 
     public function EnrolledStudents(Request $request) : JsonResponse
@@ -46,13 +51,34 @@ class EnrollController extends Controller
             $search = $request->search ?? '';
             $page = $request->page ?? 1;
             $show = $request->show ?? 5;
-            $id = $request->id ?? 1;
-
-            // get url parameters
-            $grade = Grade::where('id', $id)->firstOrFail();
+            
+            $id = $request->id ?? null;
 
             // get students
-            $students = Student::where('grade_level_id', $id)
+            if($id == null){
+                $students = Student::where(function ($query) use ($search) {
+                    $query->where('grade_level_id', 'like', '%' . $search . '%')
+                        ->orWhere('student_number', 'like', '%' . $search . '%')
+                        ->orWhere('lrn', 'like', '%' . $search . '%')
+                        ->orWhere('psa_no', 'like', '%' . $search . '%')
+                        ->orWhere('learner_status', 'like', '%' . $search . '%')
+                        ->orWhere('first_name', 'like', '%' . $search . '%')
+                        ->orWhere('middle_name', 'like', '%' . $search . '%')
+                        ->orWhere('last_name', 'like', '%' . $search . '%')
+                        ->orWhere('suffix', 'like', '%' . $search . '%')
+                        ->orWhere('gender', 'like', '%' . $search . '%')
+                        ->orWhere('student_type', 'like', '%' . $search . '%')
+                        ->orWhereHas('grade', function ($query) use ($search) {
+                            $query->where('name', 'like', '%' . $search . '%');
+                        })
+                        ->orWhereHas('section', function ($query) use ($search) {
+                            $query->where('name', 'like', '%' . $search . '%');
+                        });
+                })
+                ->with('grade', 'section')
+                ->paginate($show, ['*'], 'page', $page);
+            }else{
+                $students = Student::where('section_id', $id)
                 ->where(function ($query) use ($search) {
                     $query->where('grade_level_id', 'like', '%' . $search . '%')
                         ->orWhere('student_number', 'like', '%' . $search . '%')
@@ -74,6 +100,7 @@ class EnrollController extends Controller
                 })
                 ->with('grade', 'section')
                 ->paginate($show, ['*'], 'page', $page);
+            }
             
             $response = [
                 'students' => $students->items(),
@@ -120,7 +147,7 @@ class EnrollController extends Controller
                 'grade_level' => 'sometimes|exists:grades,id',
                 'student_type' => 'required|in:new,old,transferee,balik_aral',
                 'psa_no' => 'required|string',
-                'lrn' => 'sometimes|string',
+                'lrn' => 'sometimes',
                 'learner_status' => 'required|string',
                 'first_name' => 'required|string',
                 'middle_name' => 'required|string',
@@ -144,8 +171,9 @@ class EnrollController extends Controller
                 'guardian_contact_number' => 'sometimes',
                 // step 3
                 'learning_modules' => 'required|array',
-                'gwa' => 'required|string',
-                'previous_section' => 'required|string',
+                // gwa validation for double('gwa', 2, 2)
+                'gwa' => 'sometimes|numeric|between:0.00,100.00',
+                'previous_section' => 'sometimes|string',
             ]);
 
             // convert learning modules to integer array
@@ -153,8 +181,8 @@ class EnrollController extends Controller
             // create student
             $student = new Student();
             $student->student_number = 'STU-'.rand(100000, 999999);
-            $student->lrn = $validate['lrn'];
-            $student->psa_no = $validate['psa_no'];
+            $student->lrn = $validate['lrn'] ?? null ;
+            $student->psa_no = $validate['psa_no'] ?? null;
             $student->grade_level_id = $validate['grade_level'];
             $student->learner_status = $validate['learner_status'];
             $student->first_name = $validate['first_name'];
@@ -212,7 +240,7 @@ class EnrollController extends Controller
             return response()->json([
                 'success' => false,
                 'error' => $e->getMessage(),
-                'errors' => $e->errors(),
+                'errors' => $e->errors() ?? null,
                 'message' => 'Failed to enroll student.',
             ], 500);
         }

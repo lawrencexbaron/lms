@@ -14,13 +14,10 @@ class Controller extends BaseController
 
     public function __construct()
     {
-        $setting = Setting::first();
-        
-        $logo = $setting->logo;
-        $favicon = $setting->favicon;
+        $setting = Setting::first();   
+        $title = $setting->system_title;
         $this->setAppName(1);
-        $this->setFavicon($favicon);
-        View::share('logo', $logo);
+        View::share('name', $title);
         
     }
 

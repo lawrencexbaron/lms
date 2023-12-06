@@ -37,6 +37,8 @@ Route::get('/enroll/success/{id}', [EnrollController::class, 'EnrollSuccess'])->
 Route::get('/enrolled/students', [EnrollController::class, 'EnrolledStudents'])->name('enrolled.students');
 Route::get('/getgrades', [GradeLevelController::class, 'GetGrades'])->name('grades');
 Route::get('/getsettings', [SettingsController::class, 'getSetting'])->name('settings');
+Route::get('/sections/export/excel', [SectionController::class, 'exportExcel'])->name('section.export-exel');
+Route::get('/sections/export/pdf', [SectionController::class, 'exportPDF'])->name('section.export-pdf');
 
 
 
@@ -53,11 +55,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/sections/{section}', [SectionController::class, 'show'])->name('section.show');
     Route::get('/sections/view/{section}', [SectionController::class, 'SectionsView'])->name('section.view');
     // Route::get('/sections/getsections', [SectionController::class, 'getSections'])->name('section.getSections');
+    
 
     // Student Routes
     Route::get('/student/{student}', [StudentController::class, 'show'])->name('student.show');
     Route::post('/student/{student}/update', [StudentController::class, 'update'])->name('student.update');
     Route::delete('/student/{student}', [StudentController::class, 'destroy'])->name('student.destroy');
+    Route::get('/student/{student}/edit', [StudentController::class, 'edit'])->name('student.edit');
 
     // Room Routes
     Route::get('/grades/rooms', [GradeLevelController::class, 'index'])->name('graderoom.index');
