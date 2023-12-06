@@ -29,7 +29,7 @@
                             <p class="text-sm my-auto hidden sm:block">Entries</p>
                         </div>
                     </div>
-                    <div class="bg-white mt-2 overflow-hidden shadow-sm border sm:rounded-lg overflow-y-auto">
+                    <div class="bg-white mt-2 overflow-hidden shadow-sm border sm:rounded-lg overflow-x-auto">
                         <table class="table-auto w-full shadow-sm overflow-y-auto">
                             <thead class="bg-gray-50">
                                 <tr class="border-b">

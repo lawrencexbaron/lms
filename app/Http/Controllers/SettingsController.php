@@ -20,7 +20,7 @@ class SettingsController extends Controller
         $app_name = $this->replaceUnderscoreToWhiteSpaces(env('APP_NAME'));
         $school_years = SchoolYear::all();
 
-        $this->setAppName($app_name . ' - Settings');
+        $this->setAppName(1,'Settings');
         return view('setting.index', compact('setting', 'app_name', 'school_years'));
     }
 

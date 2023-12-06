@@ -81,8 +81,8 @@
                                 <p class="text-sm my-auto hidden sm:block">Entries</p>
                             </div>
                         </div>
-                        <div class="bg-white mt-2 overflow-hidden shadow-sm border sm:rounded-lg overflow-y-auto">
-                            <table class="table-auto w-full shadow-sm overflow-y-auto">
+                        <div class="bg-white mt-2 overflow-hidden shadow-sm border sm:rounded-lg overflow-x-auto">
+                            <table class="table-auto w-full shadow-sm overflow-x-auto">
                                 <thead class="bg-gray-50 text-sm uppercase">
                                     <tr class="border-b">
                                         <th class="px-3 py-2">LRN</th>

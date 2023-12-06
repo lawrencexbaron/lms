@@ -14,10 +14,7 @@ class Controller extends BaseController
 
     public function __construct()
     {
-        $setting = Setting::first();   
-        $title = $setting->system_title;
-        $this->setAppName($setting->system_title);
-        View::share('name', $title);
+        $this->setAppName(1);
         
     }
 
@@ -25,7 +22,18 @@ class Controller extends BaseController
     public function setAppName($app_name, $page = null)
     {
         if($app_name == 1) {
-            $app_name = env('APP_NAME');
+            // $app_name = env('APP_NAME');
+            $setting = Setting::first();
+            // Split the title into words, then get the first letter of each word.
+            $app_name_parts = explode(' ', $setting->system_title);
+            $app_name_initials = '';
+
+            foreach ($app_name_parts as $part) {
+                // Add the first letter of each word to the initials string.
+                $app_name_initials .= $part[0];
+            }
+            $app_name = $app_name_initials;
+            
         }else{
             $app_name = $app_name;
         }

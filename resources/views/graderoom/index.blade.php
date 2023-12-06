@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl flex gap-2 mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl flex flex-col sm:flex-row gap-2 mx-auto sm:px-6 lg:px-8">
             <div x-data="GradeDataTable()" x-init="fetchGrades" class="flex w-full flex-col space-y-2">
                 @if(session()->has('gradesuccess'))
                     <div x-cloak class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
@@ -48,7 +48,7 @@
                                 <p class="text-sm my-auto hidden sm:block">Entries</p>
                             </div>
                         </div>
-                        <div class="bg-white mt-2 overflow-hidden shadow-sm border sm:rounded-lg overflow-y-auto">
+                        <div class="bg-white mt-2 overflow-hidden shadow-sm border sm:rounded-lg overflow-x-auto">
                             <table class="table-auto w-full shadow-sm overflow-y-auto">
                                 <thead class="bg-gray-50">
                                     <tr class="border-b">
@@ -172,7 +172,7 @@
                                 <p class="text-sm my-auto hidden sm:block">Entries</p>
                             </div>
                         </div>
-                        <div class="bg-white mt-2 overflow-hidden shadow-sm border sm:rounded-lg overflow-y-auto">
+                        <div class="bg-white mt-2 overflow-hidden shadow-sm border sm:rounded-lg overflow-x-auto">
                             <table class="table-auto w-full shadow-sm overflow-y-auto">
                                 <thead class="bg-gray-50">
                                     <tr class="border-b">

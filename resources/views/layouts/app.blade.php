@@ -26,7 +26,7 @@
                     @include('layouts.sidebar')
                 </aside>
                 <!-- Page Content -->
-                <main class=" w-full">
+                <main class=" w-full px-2 sm:px-0">
                     {{ $slot }}
                 </main>
             </div>
