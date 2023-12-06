@@ -35,26 +35,6 @@ class SchoolYearSeeder extends Seeder
                 'name' => '2024-2025',
                 'status' => 'active',
             ],
-            [
-                'name' => '2025-2026',
-                'status' => 'active',
-            ],
-            [
-                'name' => '2026-2027',
-                'status' => 'active',
-            ],
-            [
-                'name' => '2027-2028',
-                'status' => 'active',
-            ],
-            [
-                'name' => '2028-2029',
-                'status' => 'active',
-            ],
-            [
-                'name' => '2029-2030',
-                'status' => 'active',
-            ],
         ];
 
         foreach ($data as $school_year) {

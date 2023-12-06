@@ -10,4 +10,9 @@ class Setting extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function school_year()
+    {
+        return $this->hasOne(SchoolYear::class, 'id', 'school_year_id');
+    }
 }

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('settings', function (Blueprint $table) {
-            $table->foreignId('school_year_id')->after('phone')->nullable()->constrained('school_years')->onDelete('cascade');
+            $table->string('background_logo')->nullable();
         });
     }
 
@@ -21,9 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('settings', function (Blueprint $table) {
-            $table->dropForeign(['school_year_id']);
-            $table->dropColumn('school_year_id');
+        Schema::tab('settings', function (Blueprint $table) {
+            $table->dropColumn('background_logo');
         });
     }
 };

@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('settings', function (Blueprint $table) {
-            $table->foreignId('school_year_id')->after('phone')->nullable()->constrained('school_years')->onDelete('cascade');
+        Schema::table('students', function (Blueprint $table) {
+            //
+            $table->double('gwa', 5, 2)->nullable()->after('grade_level_id')->change();
         });
     }
 
@@ -21,9 +22,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('settings', function (Blueprint $table) {
-            $table->dropForeign(['school_year_id']);
-            $table->dropColumn('school_year_id');
+        Schema::table('students', function (Blueprint $table) {
+            //
+            $table->string('gwa')->nullable()->change();
+            
         });
     }
 };

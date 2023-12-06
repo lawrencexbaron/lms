@@ -16,8 +16,13 @@ class SettingsSeeder extends Seeder
         //
         Setting::create([
             'system_name' => 'Enrollment System',
-            'system_email' => 'admin@admin@.com',
+            'system_email' => 'admin@admin.com',
             'system_title' => 'Enhanced Enrollment System',
+            'logo' => 'uploads/logo.png',
+            'favicon' => 'uploads/favicon.png',
+            'school_year_id' => 3,
+            'address' => 'Navotas City',
+            'phone' => '09123456789',
         ]);
         
     }
