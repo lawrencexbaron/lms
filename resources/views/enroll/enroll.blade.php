@@ -1,8 +1,8 @@
 <x-header-layout>
-    <div class="py-12 w-full">
+    <div class="sm:py-12 w-full">
         <div x-data="EnrollmentApplication()" class="mx-auto sm:max-w-6xl">
             <div class="bg-white w-full overflow-hidden shadow-lg">
-                <div class="bg-blue-600 flex-col px-3 py-6 text-white items-center flex justify-center w-full">
+                <div class="bg-blue-600 text-center flex-col px-3 py-6 text-white items-center flex justify-center w-full">
                     <p class="font-semibold text-2xl">
                         {{ $settings->system_title . ' Enrollment Form' ?? 'Enrollment System' }}
                     </p>
@@ -16,12 +16,12 @@
                                 Learner Information
                             </p>
                         </div>
-                        <div class="w-full flex gap-4 items-center my-auto">
+                        <div class="w-full grid grid-cols-2 sm:flex gap-4 items-center my-auto">
                             <div class="flex flex-col">
                                 <x-input-label for="lrn" :value="__('School Year')" />
                                 <p>{{ $settings->school_year->name }}</p>
                             </div>
-                            <div class="flex flex-col w-1/4">
+                            <div class="flex flex-col sm:w-1/4">
                                 <x-input-label for="lrn" :value="__('Grade Level')" />
                                 <select @focus="clearError('grade_level')" x-model="formData.grade_level" name="grade_level" id="grade_level" class="border px-2 py-1 border-gray-300 rounded-md">
                                     <option value="">Select Grade Level</option>
@@ -35,27 +35,27 @@
                             </div>
                             <div class="flex-col flex">
                                 <x-input-label for="type" :value="__('Student Type')" />
-                                <div class="flex gap-2">
+                                <div class="sm:flex grid grid-cols-2 gap-2">
                                     <div class="flex gap-2 items-center">
                                         <input @focus="clearError('student_type')" x-model="formData.student_type" value="old" type="radio" name="student_type" id="student_type" class="border-gray-300 rounded-md" />
-                                        <x-input-label for="student_type" :value="__('Old Student')" />
+                                        <x-input-label class="text-xs sm:text-sm" for="student_type" :value="__('Old Student')" />
                                     </div>
                                     <div class="flex gap-2 items-center">
                                         <input @focus="clearError('student_type')" x-model="formData.student_type" value="new" type="radio" name="student_type" id="student_type" class="border-gray-300 rounded-md" />
-                                        <x-input-label for="student_type" :value="__('New Student')" />
+                                        <x-input-label class="text-xs sm:text-sm" for="student_type" :value="__('New Student')" />
                                     </div>
                                     <div class="flex gap-2 items-center">
                                         <input @focus="clearError('student_type')" x-model="formData.student_type" value="balik_aral" type="radio" name="student_type" id="student_type" class="border-gray-300 rounded-md" />
-                                        <x-input-label for="student_type" :value="__('Balik Aral')" />
+                                        <x-input-label class="text-xs sm:text-sm" for="student_type" :value="__('Balik Aral')" />
                                     </div>
                                     <div class="flex gap-2 items-center">
                                         <input @focus="clearError('student_type')" x-model="formData.student_type" value="transferee" type="radio" name="student_type" id="student_type" class="border-gray-300 rounded-md" />
-                                        <x-input-label for="student_type" :value="__('Transferee')" />
+                                        <x-input-label class="text-xs sm:text-sm" for="student_type" :value="__('Transferee')" />
                                     </div>
                                 </div>
                                 <span x-show="hasError('student_type')" x-text="getError('student_type')" class="text-red-500 text-xs"></span>
                             </div>
-                            <div class="flex flex-col w-1/4">
+                            <div class="flex flex-col sm:w-1/4">
                                 <x-input-label for="lrn" :value="__('Learner Status')" />
                                 <select @focus="clearError('learner_status')" x-model="formData.learner_status" name="learner_status" id="learner_status" class="border px-2 py-1 border-gray-300 rounded-md">
                                     <option value="">Select Learner Status</option>
@@ -65,52 +65,52 @@
                                 <span x-show="hasError('learner_status')" x-text="getError('learner_status')" class="text-red-500 text-xs"></span>
                             </div>
                         </div>
-                        <div class="w-full flex gap-2 items-center my-auto">
-                            <div class="flex flex-col w-1/2">
-                                <x-input-label for="lrn" :value="__('PSA Birth Cert. No (If available upon enrollment)')" />
+                        <div class="w-full flex gap-2 items-center">
+                            <div class="flex flex-col sm:w-1/2">
+                                <x-input-label for="lrn" :value="__('PSA Birth Cert. No (Optional)')" />
                                 <x-text-input @focus="clearError('psa_no')" x-model="formData.psa_no" id="psa_no" class="block mt-1 w-full" type="text" name="psa_no" :value="old('psa_no')" required autofocus />
                                 <span x-show="hasError('psa_no')" x-text="getError('psa_no')" class="text-red-500 text-xs"></span>
                             </div>
-                            <div class="flex flex-col w-1/2">
+                            <div class="flex flex-col sm:w-1/2">
                                 <x-input-label for="lrn" :value="__('LRN')" />
                                 <x-text-input @focus="clearError('lrn')" x-model="formData.lrn" id="lrn" class="block mt-1 w-full" type="text" name="lrn" :value="old('lrn')" required autofocus />
                                 <span x-show="hasError('lrn')" x-text="getError('lrn')" class="text-red-500 text-xs"></span>
                             </div>
                         </div>
-                        <div class="w-full flex gap-2 items-center my-auto">
-                            <div class="flex flex-col w-1/2">
+                        <div class="w-full sm:flex grid grid-cols-2 gap-2 items-center">
+                            <div class="flex flex-col sm:w-1/2">
                                 <x-input-label for="lrn" :value="__('First Name')" />
                                 <x-text-input @focus="clearError('first_name')" x-model="formData.first_name" id="first_name" class="block mt-1 w-full" type="text" name="first_name" :value="old('first_name')" required autofocus />
                                 <span x-show="hasError('first_name')" x-text="getError('first_name')" class="text-red-500 text-xs"></span>
                             </div>
-                            <div class="flex flex-col w-1/2">
+                            <div class="flex flex-col sm:w-1/2">
                                 <x-input-label for="lrn" :value="__('Middle Name')" />
                                 <x-text-input @focus="clearError('middle_name')" x-model="formData.middle_name" id="middle_name" class="block mt-1 w-full" type="text" name="middle_name" :value="old('middle_name')" required autofocus />
                                 <span x-show="hasError('middle_name')" x-text="getError('middle_name')" class="text-red-500 text-xs"></span>
                             </div>
-                            <div class="flex flex-col w-1/2">
+                            <div class="flex flex-col sm:w-1/2">
                                 <x-input-label for="lrn" :value="__('Last Name')" />
                                 <x-text-input @focus="clearError('last_name')" x-model="formData.last_name" id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name')" required autofocus />
                                 <span x-show="hasError('last_name')" x-text="getError('last_name')" class="text-red-500 text-xs"></span>
                             </div>
-                            <div class="flex flex-col w-1/2">
+                            <div class="flex flex-col sm:w-1/2">
                                 <x-input-label for="lrn" :value="__('Extension Name')" />
                                 <x-text-input @focus="clearError('extension_name')" x-model="formData.extension_name" id="extension_name" class="block mt-1 w-full" type="text" name="extension_name" :value="old('extension_name')" required autofocus />
                                 <span x-show="hasError('extension_name')" x-text="getError('extension_name')" class="text-red-500 text-xs"></span>
                             </div>
                         </div>
-                        <div class="w-full flex gap-2 items-center my-auto">
-                            <div class="flex flex-col w-1/4">
+                        <div class="w-full sm:flex grid grid-cols-2 gap-2 items-center">
+                            <div class="flex flex-col sm:w-1/4">
                                 <x-input-label for="lrn" :value="__('Date of Birth')" />
                                 <x-text-input max="{{ date('Y-m-d')}}" @focus="clearError('date_of_birth')" x-model="formData.date_of_birth" id="date_of_birth" class="block mt-1 w-full" type="date" name="date_of_birth" :value="old('date_of_birth')" required autofocus />
                                 <span x-show="hasError('date_of_birth')" x-text="getError('date_of_birth')" class="text-red-500 text-xs"></span>
                             </div>
-                            <div class="flex flex-col w-1/4">
+                            <div class="flex flex-col sm:w-1/4">
                                 <x-input-label for="lrn" :value="__('Place of Birth')" />
                                 <x-text-input @focus="clearError('place_of_birth')" x-model="formData.place_of_birth" id="place_of_birth" class="block mt-1 w-full" type="text" name="place_of_birth" :value="old('place_of_birth')" required autofocus />
                                 <span x-show="hasError('place_of_birth')" x-text="getError('place_of_birth')" class="text-red-500 text-xs"></span>
                             </div>
-                            <div class="flex flex-col w-1/4">
+                            <div class="flex flex-col sm:w-1/4">
                                 <x-input-label for="lrn" :value="__('Gender')" />
                                 <div class="flex gap-4">
                                     <div class="flex gap-2 items-center">
@@ -124,7 +124,7 @@
                                 </div>
                                 <span x-show="hasError('gender')" x-text="getError('gender')" class="text-red-500 text-xs"></span>
                             </div>
-                            <div class="flex flex-col w-1/4">
+                            <div class="flex flex-col sm:w-1/4">
                                 <x-input-label for="lrn" :value="__('Mother Tongue')" />
                                 <select @focus="clearError('mother_tongue')" x-model="formData.mother_tongue" name="mother_tongue" id="mother_tongue" class="border px-2 py-1 border-gray-300 rounded-md">
                                     <option value="">Select Mother Tongue</option>
@@ -144,23 +144,23 @@
                                 <span x-show="hasError('mother_tongue')" x-text="getError('mother_tongue')" class="text-red-500 text-xs"></span>
                             </div>
                         </div>
-                        <div class="w-full flex items-center gap-2 my-auto">
-                            <div class="flex flex-col w-1/4">
+                        <div class="w-full sm:flex grid grid-cols-2 gap-2 items-centero">
+                            <div class="flex flex-col sm:w-1/4">
                                 <x-input-label for="lrn" :value="__('House No.')" />
                                 <x-text-input @focus="clearError('house_no')" x-model="formData.house_no" id="house_no" class="block mt-1 w-full" type="text" name="house_no" :value="old('house_no')" required autofocus />
                                 <span x-show="hasError('house_no')" x-text="getError('house_no')" class="text-red-500 text-xs"></span>
                             </div>
-                            <div class="flex flex-col w-1/4">
+                            <div class="flex flex-col sm:w-1/4">
                                 <x-input-label for="lrn" :value="__('Street')" />
                                 <x-text-input @focus="clearError('street')" x-model="formData.street" id="street" class="block mt-1 w-full" type="text" name="street" :value="old('street')" required autofocus />
                                 <span x-show="hasError('street')" x-text="getError('street')" class="text-red-500 text-xs"></span>
                             </div>
-                            <div class="flex flex-col w-1/4">
+                            <div class="flex flex-col sm:w-1/4">
                                 <x-input-label for="lrn" :value="__('Barangay')" />
                                 <x-text-input @focus="clearError('barangay')" x-model="formData.barangay" id="barangay" class="block mt-1 w-full" type="text" name="barangay" :value="old('barangay')" required autofocus />
                                 <span x-show="hasError('barangay')" x-text="getError('barangay')" class="text-red-500 text-xs"></span>
                             </div>
-                            <div class="flex flex-col w-1/4">
+                            <div class="flex flex-col sm:w-1/4">
                                 <x-input-label for="lrn" :value="__('City/Municipality')" />
                                 <x-text-input @focus="clearError('city_municipality')" x-model="formData.city_municipality" id="city_municipality" class="block mt-1 w-full" type="text" name="city_municipality" :value="old('city_municipality')" required autofocus />
                                 <span x-show="hasError('city_municipality')" x-text="getError('city_municipality')" class="text-red-500 text-xs"></span>
@@ -233,14 +233,14 @@
                                 Preferred Learning Modules
                             </p>
                         </div>
-                        <div class="flex">
-                            <div class="w-1/2 flex gap-2 items-center my-auto">
+                        <div class="sm:flex grid grid-cols-2">
+                            <div class="sm:w-1/2 flex gap-2 items-center my-auto">
                                 <div class="flex flex-col">
                                     <span x-show="hasError('learning_modules')" x-text="getError('learning_modules')" class="text-red-500 text-xs"></span>
                                     <x-input-label for="lrn" :value="__('Learning Modules')" />
-                                    <div class="grid grid-cols-2 gap-2 my-4">
+                                    <div class="grid sm:grid-cols-2 gap-1 sm:gap-2 my-4">
                                         @foreach(\App\Models\StudentModule::MODULES_DISPLAY as $moduleId => $moduleName)
-                                            <div class="flex gap-2 items-center">
+                                            <div class="flex gap-1 sm:gap-1 items-center">
                                                 <input @focus="clearError('learning_modules')" type="checkbox" x-model="formData.learning_modules" value="{{ $moduleId }}" name="{{ $moduleName }}" id="{{ $moduleName }}" class="border-gray-300 rounded-md" />
                                                 <x-input-label :for="$moduleName" :value="__($moduleName)" />
                                             </div>
@@ -248,7 +248,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="w-1/2 flex flex-col gap-2">
+                            <div class="sm:w-1/2 flex flex-col gap-2">
                                 <div class="flex flex-col">
                                     <span x-show="hasError('gwa')" x-text="getError('gwa')" class="text-red-500 text-xs"></span>
                                     <x-input-label for="lrn" :value="__('General Weighted Average')" />
