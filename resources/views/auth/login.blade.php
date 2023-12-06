@@ -3,7 +3,7 @@
     <x-auth-session-status class="mb-4" :status="session('status')" />
     <div class="my-8">
         <p class="text-3xl font-bold">
-            {{ __('Administrator Access') }}
+            {{ __('Welcome') }}
         </p>
     </div>
     <form method="POST" action="{{ route('login') }}">
