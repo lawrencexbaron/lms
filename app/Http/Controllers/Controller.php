@@ -16,7 +16,7 @@ class Controller extends BaseController
     {
         $setting = Setting::first();   
         $title = $setting->system_title;
-        $this->setAppName(1);
+        $this->setAppName($setting->system_title);
         View::share('name', $title);
         
     }

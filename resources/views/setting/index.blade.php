@@ -19,7 +19,7 @@
                     <div class="flex flex-col sm:flex-row border-b py-2 my-auto">
                         <x-input-label class="sm:w-1/4 my-auto" for="system_name" :value="__('System Name')" />
                         <div class="flex flex-col w-full">
-                            <x-text-input id="system_name" class="block mt-1 w-full sm:w-3/4" type="text" name="system_name" value="{{ $app_name }}" />
+                            <x-text-input id="system_name" class="block mt-1 w-full sm:w-3/4" type="text" name="system_name" value="{{ $setting->system_name }}" />
                             <x-input-error :messages="$errors->get('system_name')" class="mt-1" />
                         </div>
                     </div>
