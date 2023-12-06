@@ -24,17 +24,30 @@
                         </div>
                     </div>
                     <div class="flex flex-col sm:flex-row border-b py-2 my-auto">
-                        <x-input-label class="sm:w-1/4 my-auto" for="name" :value="__('System Title')" />
+                        <x-input-label class="sm:w-1/4 my-auto" for="name" :value="__('School Name')" />
                         <div class="flex flex-col w-full">
                             <x-text-input id="name" class="block mt-1 w-full sm:w-3/4" type="text" name="system_title" value="{{ $setting->system_title }}" />
                             <x-input-error :messages="$errors->get('system_title')" class="mt-1" />
                         </div>
                     </div>
                     <div class="flex flex-col sm:flex-row border-b py-2 my-auto">
-                        <x-input-label class="sm:w-1/4 my-auto" for="email" :value="__('System Email')" />
+                        <x-input-label class="sm:w-1/4 my-auto" for="email" :value="__('School Email')" />
                         <div class="flex flex-col w-full">
                             <x-text-input id="email" class="block mt-1 w-full sm:w-3/4" type="text" name="system_email" value="{{ $setting->system_email }}" />
                             <x-input-error :messages="$errors->get('system_email')" class="mt-1" />
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row border-b py-2 my-auto">
+                        <x-input-label class="sm:w-1/4 my-auto" for="school_year" :value="__('School Year')" />
+                        <div class="flex flex-col w-full">
+                            @if(!$school_years->isEmpty())
+                            <select name="school_year" id="school_year" class="block mt-1 w-full sm:w-3/4 border border-gray-300 rounded-md">
+                                @foreach($school_years as $school_year)
+                                    <option value="{{ $school_year->id }}" {{ $school_year->id == $setting->school_year_id ? 'selected' : '' }}>{{ $school_year->name }}</option>
+                                @endforeach
+                            </select>
+                            @endif
+                            <x-input-error :messages="$errors->get('school_year')" class="mt-1" />
                         </div>
                     </div>
                     <div class="flex justify-between sm:justify-normal sm:flex-row border-b py-2 my-auto">
@@ -54,6 +67,14 @@
                             
                         </div>
                         <x-input-error :messages="$errors->get('favicon')" class="mt-1 w-1/4" />
+                    </div>
+                    <div class="flex justify-between sm:justify-normal sm:flex-row border-b py-2 my-auto">
+                        <x-input-label class="sm:w-1/4 my-auto" for="background" :value="__('Background Logo')" />
+                        <x-text-input @change="onBackgroundLogoChange()" id="background" class=" mt-1 w-full sm:w-3/4 hidden" type="file" name="background" value="{{ $setting->background_logo }}" />
+                        <div class="flex">
+                            <img id="background_logo" @click="onBackgroundLogoClick()" src="{{ asset('storage/'.$setting->background_logo) }}" alt="background_logo" class="w-20 h-20 rounded-full object-cover hover:cursor-pointer hover:opacity-90 transition-all" />
+                        </div>
+                        <x-input-error :messages="$errors->get('background_logo')" class="mt-1 w-1/4" />
                     </div>
                     <div class="flex flex-col sm:flex-row border-b py-2 my-auto">
                         <x-input-label class="sm:w-1/4 my-auto" for="address" :value="__('Address')" />
@@ -88,6 +109,7 @@
         return {
             logo: null,
             favicon: null,
+            background_logo: null,
             init(){
                 this.logo = document.getElementById('logo').files[0];
                 this.favicon = document.getElementById('favicon').files[0];
@@ -103,6 +125,17 @@
 
             },
 
+            onBackgroundLogoChange(){
+                this.background_logo = document.getElementById('background').files[0];
+                // override the src of the image
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('background_logo').src = e.target.result;
+                }
+                reader.readAsDataURL(this.background_logo);
+
+            },
+
             onFaviconChange(){
                 this.favicon = document.getElementById('favicon').files[0];
                 // override the src of the image
@@ -115,6 +148,9 @@
             },
             onLogoClick(){
                 document.getElementById('logo').click();
+            },
+            onBackgroundLogoClick(){
+                document.getElementById('background').click();
             },
             onFaviconClick(){
                 document.getElementById('favicon').click();

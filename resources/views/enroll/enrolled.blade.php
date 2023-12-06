@@ -176,7 +176,7 @@
 
             editStudent(id){
                 // redirect to edit page
-                window.location.href = '/sections/edit/' + id;
+                window.location.href = '/student/' + id;
             },
         
             deleteStudent(id){

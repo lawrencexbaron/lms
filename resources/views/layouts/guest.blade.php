@@ -18,20 +18,21 @@
     </head>
     <body class="font-sans bg-gray-50 text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:flex-row sm:justify-between items-center pt-6 sm:pt-0 bg-gray-100 w-full">
-            <div class="w-1/2 flex items-center justify-center min-h-screen">
-                {{-- <x-primary-link href="{{ route('enroll.index') }}">
-                    {{ __("Enroll now") }}
-                </x-primary-link> --}}
-                <img src="{{ asset('storage/uploads/logo.png') }}" alt="logo" class="w-1/2 bg-transparent" />
+            <div class="hidden sm:w-1/2 sm:flex items-center justify-center min-h-screen relative">
+                <img src="{{ asset('storage/uploads/background.png') }}" alt="background" class="absolute inset-0 w-full h-full object-cover filter brightness-50" />
+                <img src="{{ asset('storage/uploads/logo.png') }}" alt="logo" class="relative w-1/4 bg-transparent" />
             </div>
-            <div class="w-1/2 shadow-lg border-left min-h-screen flex items-center justify-center sm:flex-col">
+            <div class="sm:w-1/2 sm:shadow-lg border-left min-h-screen flex items-center justify-center flex-col">
+                <img src="{{ asset('storage/uploads/logo.png') }}" alt="logo" class="w-24 bg-transparent" />
                 <div class="w-full sm:max-w-lg mt-6 px-6 py-4 bg-white border overflow-hidden sm:rounded-lg">
                     {{ $slot }}
                 </div>
-                <x-primary-link href="{{ route('enroll.index') }}" class="mt-2 w-full sm:max-w-lg bg-green-500 hover:bg-green-600 text-white">
+                <x-input-label for="email" class="mt-2 w-full sm:max-w-lg text-center">
+                    {{ __('Online Enrollment') }}
+                </x-input-label>
+                <x-primary-link href="{{ route('enroll.index') }}" class="mt-2 w-full sm:max-w-lg bg-red-700 hover:bg-red-600 focus:bg-red-800 text-white active:bg-red-900 focus:ring-red-500">
                     {{ __("Enroll now") }}
                 </x-primary-link>
-                
             </div>
         </div>
     </body>

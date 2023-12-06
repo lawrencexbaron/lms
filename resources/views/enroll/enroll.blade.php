@@ -3,9 +3,11 @@
         <div x-data="EnrollmentApplication()" class="mx-auto sm:max-w-6xl">
             <div class="bg-white w-full overflow-hidden shadow-lg">
                 <div class="bg-blue-600 flex-col px-3 py-6 text-white items-center flex justify-center w-full">
-                    <p class="font-semibold text-2xl">Enhanced Basic Education Enrollment System</p>
-                    <p>Schools Division of Navotas City</p>
-                    <p>S.Y. 2022-2023</p>
+                    <p class="font-semibold text-2xl">
+                        {{ $settings->system_title . ' Enrollment Form' ?? 'Enrollment System' }}
+                    </p>
+                    <p>{{ $settings->division ?? "Schools Division of Navotas City" }} </p>
+                    <p>S.Y. {{ $settings->school_year->name }}</p>
                 </div>
                 <div class="px-5 flex flex-col py-4 w-full" x-show="step == 1">
                     <div class="flex flex-col w-full space-y-3">
@@ -17,7 +19,7 @@
                         <div class="w-full flex gap-4 items-center my-auto">
                             <div class="flex flex-col">
                                 <x-input-label for="lrn" :value="__('School Year')" />
-                                <p>2022-2023</p>
+                                <p>{{ $settings->school_year->name }}</p>
                             </div>
                             <div class="flex flex-col w-1/4">
                                 <x-input-label for="lrn" :value="__('Grade Level')" />
@@ -396,7 +398,7 @@ function EnrollmentApplication(){
             if(!this.formData.psa_no || this.formData.psa_no.trim() === ''){
                 this.errors.psa_no = "PSA Birth Cert. No is required";
             }
-            if(!this.formData.lrn || this.formData.lrn.trim() === ''){
+            if(this.formData.learner_status == 2 && (!this.formData.lrn || this.formData.lrn.trim() === '') ){
                 this.errors.lrn = "LRN is required";
             }
             if(!this.formData.first_name || this.formData.first_name.trim() === ''){
@@ -468,8 +470,11 @@ function EnrollmentApplication(){
             if(Object.keys(this.errors).length > 0){
                 return;
             }
-            alert('submit');
-            console.log(this.formData);
+            
+            Toast.fire({
+                icon: 'success',
+                title: 'Submitting enrollment application...'
+            });
 
             const fdata = JSON.stringify(this.formData);
 

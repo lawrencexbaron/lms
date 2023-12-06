@@ -10,7 +10,7 @@
             <div class="bg-white w-1/4 sm:h-[410px] flex flex-col border rounded shadow-sm mt-2 overflow-y-auto">
                 <div class="px-5 py-8 flex flex-col border-b items-center justify-center text-center">
                     <p class="font-bold text-2xl mb-2">
-                        {{ $student->first_name }} {{ $student->last_name }} {{ $student->suffix ?? ''  }}
+                        {{ $student->first_name }} {{ $student->last_name }}
                     </p>
                     <p class="text-md">
                         {{ $student->student_number }}
@@ -112,15 +112,7 @@
                                     </div>
                                     <div>
                                         <x-input-label for="section" :value="__('Section')" />
-                                        {{-- <x-text-input id="section" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="section" :value="$student->section ? $student->section->name : 'Not Enrolled'" required autofocus /> --}}
-                                        <select x-model="formData.section" x-bind:disabled="!studentProfileEdit" name="section" id="section" class="border-gray-300 mt-1 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                                            <option value="" readonly selected>Not Enrolled</option>
-                                            @if(isset($sections))
-                                                @foreach($sections as $section)
-                                                    <option value="{{ $section->id }}" {{ $section->id == $student->section_id ? 'selected' : '' }}>{{ $section->name }}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
+                                        <x-text-input id="section" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="section" :value="$student->section ? $student->section->name : 'Not Enrolled'" required autofocus />
                                     </div>
                                     <div>
                                         <x-input-label for="student_type" :value="__('Student Type')" />
@@ -366,7 +358,6 @@
                     place_of_birth: @js($student->place_of_birth),
                     gender: @js($student->gender),
                     gwa: @js($student->gwa),
-                    section: @js($student->section_id),
                     // last grade level
                     previous_level: @js($student->previous_level),
                     // last school year

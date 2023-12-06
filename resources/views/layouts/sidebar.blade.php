@@ -5,7 +5,6 @@
             <p x-model="system_title" x-text="system_title" class="text-lg font-semibold"></p>
             <p x-model="email" x-text="email" class="text-sm"></p>
         </div>
-
     </div>
     <div class="bg-gray-200 h-8 flex items-center justify-center">
         <p class="text-sm">Main Navigation</p>
@@ -67,6 +66,7 @@
             {{ __('Settings') }}
         </x-side-nav-link>
     </div>
+    
 </div>
 
 <script>
