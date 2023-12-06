@@ -22,7 +22,7 @@
                 <img src="{{ asset('storage/uploads/background.png') }}" alt="background" class="absolute inset-0 w-full h-full object-cover filter brightness-50" />
                 <img src="{{ asset('storage/uploads/logo.png') }}" alt="logo" class="relative w-1/4 bg-transparent" />
             </div>
-            <div class="sm:w-1/2 sm:shadow-lg border-left min-h-screen flex items-center justify-center flex-col">
+            <div class="w-full px-3 sm:px-0 sm:w-1/2 sm:shadow-lg border-left min-h-screen flex items-center sm:justify-center flex-col">
                 <img src="{{ asset('storage/uploads/logo.png') }}" alt="logo" class="w-24 bg-transparent" />
                 <div class="w-full sm:max-w-lg mt-6 px-6 py-4 bg-white border overflow-hidden sm:rounded-lg">
                     {{ $slot }}
