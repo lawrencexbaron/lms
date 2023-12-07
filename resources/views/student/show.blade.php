@@ -338,7 +338,7 @@
 
         function StudentShow(){
             return{
-                activeTab: parseInt(localStorage.getItem('activeTab')) ?? 0,
+                activeTab: parseInt(localStorage.getItem('activeTab')) || 0,
                 student_id: @js($student->id),
                 studentProfileEdit: false,
                 parentInfoEdit: false,

@@ -1,6 +1,6 @@
 <div class="flex flex-col min-h-full bg-white shadow" x-data="toggleEnrolled()" x-init="fetchGrades()">
     <div class="flex items-end justify-end h-40 w-full overflow-hidden" x-init="fetchSettings()">
-        <img x-cloak x-model="logo" x-bind:src="logo" class="h-full w-full object-contain relative opacity-90" />
+        <img x-cloak x-model="logo" x-bind:src="logo" class="h-full w-full bg-transparent object-contain relative opacity-90" />
         <div class="absolute text-white w-[265px] p-1.5 shadow bg-gray-900 bg-opacity-50">
             <p x-model="system_title" x-text="system_title" class="text-lg font-semibold"></p>
             <p x-model="email" x-text="email" class="text-sm"></p>
