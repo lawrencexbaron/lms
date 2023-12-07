@@ -6,8 +6,8 @@
     </x-slot>
 
     <div class="py-12 flex" x-data="StudentShow()">
-        <div class="max-w-7xl w-full flex gap-2 mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white w-1/4 sm:h-[410px] flex flex-col border rounded shadow-sm mt-2 overflow-y-auto">
+        <div class="max-w-7xl w-full flex flex-col sm:flex-row gap-2 mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white sm:w-1/4 sm:h-[410px] flex flex-col border rounded shadow-sm mt-2 overflow-y-auto">
                 <div class="px-5 py-8 flex flex-col border-b items-center justify-center text-center">
                     <p class="font-bold text-2xl mb-2">
                         {{ $student->first_name }} {{ $student->last_name }} {{ $student->suffix ?? ''  }}
@@ -59,49 +59,48 @@
             <div x-cloak x-bind:class="{
                 'sm:h-[320px]': activeTab === 1,
                 'sm:h-[290px]': activeTab === 2
-            }" class="bg-white p-3 w-3/4 flex-col border rounded shadow-sm mt-2">
+            }" class="bg-white p-3 sm:w-3/4 flex-col border rounded shadow-sm mt-2">
                 <div class="flex border-b gap-4 w-full">
                     <template x-for="(tab, index) in tabs" :key="index">
-                        <div class="flex-1 py-2 text-center cursor-pointer"
+                        <div class="flex-1 py-2 text-center cursor-pointer items-center justify-center"
                             :class="activeTab===index ? 'border-b-2 text-black border-blue-800 cursor-pointer hover:border-b-2 hover:border-b-blue-800 py-2 hover:text-black font-medium transition' : 'cursor-pointer hover:border-b-2 hover:border-b-blue-800 py-2 text-gray-500 hover:text-black font-medium transition'"
                             @click="setActiveTab(index)">
-                            <p x-text="tab"></p>
+                            <p x-text="tab" class="text-xs sm:text-sm flex items-center justify-center"></p>
                         </div>
                     </template>
                 </div>
                 <div class="flex flex-col">
                     <div class="flex my-2 w-full px-2 items-center justify-center">
-                        <div x-show="activeTab === 0" class="flex flex-col gap-2">
-                            <div class="flex flex-col">
+                        <div x-show="activeTab === 0" class="flex flex-col w-full justify-between">
+                            <div class="flex flex-col gap-2">
                                 {{-- First Row --}}
-                                <div class="flex gap-1">
-                                    <div>
+                                <div class="sm:flex gap-2 w-full grid grid-cols-2">
+                                    <div class="w-full">
                                         <x-input-label for="first_name" :value="__('First Name')" />
                                         <x-text-input x-model="formData.first_name" id="first_name" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="first_name" required autofocus />
                                     </div>
-                                    <div>
+                                    <div class="w-full">
                                         <x-input-label for="middle_name" :value="__('Middle Name')" />
                                         <x-text-input x-model="formData.middle_name" id="middle_name" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="middle_name" required autofocus />
                                     </div>
-                                    <div>
+                                    <div class="w-full">
                                         <x-input-label for="last_name" :value="__('Last Name')" />
                                         <x-text-input x-model="formData.last_name" id="last_name" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="last_name" required autofocus />
                                     </div>
-                                    <div>
+                                    <div class="w-full">
                                         <x-input-label for="suffix" :value="__('Suffix')" />
                                         <x-text-input x-model="formData.suffix" id="suffix" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="suffix" required autofocus />
                                     </div>
                                 </div>
                                 {{-- Second Row --}}
-                                <div class="flex gap-1">
-                                    <div>
+                                <div class="sm:flex gap-2 w-full grid grid-cols-2">
+                                    <div class="w-full">
                                         <x-input-label for="student_number" :value="__('Student Number')" />
                                         <x-text-input id="student_number" class="block mt-1 w-full" type="text" disabled name="student_number" :value="$student->student_number" required autofocus />
                                     </div>
-                                    <div>
+                                    <div class="w-full">
                                         <x-input-label for="grade_level" :value="__('Grade Level')" />
-                                        {{-- <x-text-input id="grade_level" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="grade_level" :value="$student->grade->name" required autofocus /> --}}
-                                        <select x-model="formData.grade_level" x-bind:disabled="!studentProfileEdit" name="grade_level" id="grade_level" class="border-gray-300 mt-1 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                                        <select x-model="formData.grade_level" x-bind:disabled="!studentProfileEdit" name="grade_level" id="grade_level" class="border-gray-300 mt-1 w-full focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                                             <option value="" disabled readonly>Select Grade Level</option>
                                             @if(isset($grades))
                                                 @foreach($grades as $grade)
@@ -110,10 +109,9 @@
                                             @endif
                                         </select>
                                     </div>
-                                    <div>
+                                    <div class="w-full">
                                         <x-input-label for="section" :value="__('Section')" />
-                                        {{-- <x-text-input id="section" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="section" :value="$student->section ? $student->section->name : 'Not Enrolled'" required autofocus /> --}}
-                                        <select x-model="formData.section" x-bind:disabled="!studentProfileEdit" name="section" id="section" class="border-gray-300 mt-1 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                                        <select x-model="formData.section" x-bind:disabled="!studentProfileEdit" name="section" id="section" class="border-gray-300 mt-1 w-full focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                                             <option value="" readonly selected>Not Enrolled</option>
                                             @if(isset($sections))
                                                 @foreach($sections as $section)
@@ -122,9 +120,9 @@
                                             @endif
                                         </select>
                                     </div>
-                                    <div>
+                                    <div class="w-full">
                                         <x-input-label for="student_type" :value="__('Student Type')" />
-                                        <select x-model="formData.student_type" name="student_type" id="student_type" x-bind:disabled="!studentProfileEdit" class="border-gray-300 mt-1 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                                        <select x-model="formData.student_type" name="student_type" id="student_type" x-bind:disabled="!studentProfileEdit" class="border-gray-300 mt-1 w-full focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                                             <option value="new" {{ $student->student_type == 'new' ? 'selected' : '' }}>New Student</option>
                                             <option value="old" {{ $student->student_type == 'old' ? 'selected' : '' }}>Old Student</option>
                                             <option value="transferee" {{ $student->student_type == 'transferee' ? 'selected' : '' }}>Transferee</option>
@@ -133,25 +131,25 @@
                                     </div>
                                 </div>
                                 {{-- Third Row --}}
-                                <div class="gap-1 flex">
-                                    <div>
+                                <div class="sm:flex gap-2 w-full grid grid-cols-2">
+                                    <div class="w-full">
                                         <x-input-label for="lrn" :value="__('Learner Status')" />
                                         {{-- <x-text-input id="lrn" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="lrn" :value="$student->learner_status" required autofocus /> --}}
-                                        <select x-model="formData.learner_status" name="learner_status" id="learner_status" x-bind:disabled="!studentProfileEdit" class="border-gray-300 mt-1 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                                        <select x-model="formData.learner_status" name="learner_status" id="learner_status" x-bind:disabled="!studentProfileEdit" class="border-gray-300 mt-1 w-full focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                                             <option value="" disabled readonly>Select Learner Status</option>
                                             <option value="1" {{ $student->learner_status == 1 ? 'selected' : '' }}>No LRN</option>
                                             <option value="2" {{ $student->learner_status == 2 ? 'selected' : '' }}>With LRN</option>
                                         </select>
                                     </div>
-                                    <div>
+                                    <div class="w-full">
                                         <x-input-label for="lrn" :value="__('LRN')" />
                                         <x-text-input x-model="formData.lrn" id="lrn" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="lrn" required autofocus />
                                     </div>
-                                    <div>
+                                    <div class="w-full">
                                         <x-input-label for="psa" :value="__('PSA No.')" />
                                         <x-text-input x-model="formData.psa_no" id="psa" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="psa" required autofocus />
                                     </div>
-                                    <div>
+                                    <div class="w-full">
                                         <x-input-label for="gender" :value="__('Gender')" />
                                         <select x-model="formData.gender" name="gender" id="gender" x-bind:disabled="!studentProfileEdit" class="capitalize border-gray-300 mt-1 w-full focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                                             <option value="male" {{ $student->gender == 'male' ? 'selected' : '' }}>Male</option>
@@ -160,23 +158,23 @@
                                     </div>
                                 </div>
                                 {{-- Fourth Row --}}
-                                <div class="flex gap-1">
-                                    <div>
+                                <div class="sm:flex gap-2 w-full grid grid-cols-2">
+                                    <div class="w-full">
                                         <x-input-label for="birthdate" :value="__('Birthdate')" />
-                                        <x-text-input x-model="formData.date_of_birth" id="birthdate" class="block mt-1 w-[151px]" max="{{ date('Y-m-d') }}" type="date" x-bind:disabled="!studentProfileEdit" name="birthdate" required autofocus />
+                                        <x-text-input x-model="formData.date_of_birth" id="birthdate" class="block w-full mt-1" max="{{ date('Y-m-d') }}" type="date" x-bind:disabled="!studentProfileEdit" name="birthdate" required autofocus />
                                     </div>
-                                    <div>
+                                    <div class="w-full">
                                         <x-input-label for="age" :value="__('Age')" />
                                         <x-text-input id="age" class="block mt-1 w-full" type="text" disabled name="age" :value="$age = date('Y') - date('Y', strtotime($student->birthdate))" required autofocus />
                                     </div>
-                                    <div>
+                                    <div class="w-full">
                                         <x-input-label for="birthplace" :value="__('Birth Place')" />
                                         <x-text-input x-model="formData.place_of_birth" id="birthplace" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="birthplace" required autofocus />
                                     </div>
-                                    <div>
+                                    <div class="w-full">
                                         <x-input-label for="mothertongue" :value="__('Mother Tongue')" />
                                         {{-- <x-text-input id="mothertongue" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="mothertongue" :value="$student->mother_tongue" required autofocus /> --}}
-                                        <select x-model="formData.mother_tongue" name="mother_tongue" id="mother_tongue" x-bind:disabled="!studentProfileEdit" class="border-gray-300 mt-1 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                                        <select x-model="formData.mother_tongue" name="mother_tongue" id="mother_tongue" x-bind:disabled="!studentProfileEdit" class="border-gray-300 mt-1 w-full focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                                             <option {{ $student->mother_tongue == $student->mother_tongue ? 'selected' : '' }} value="">Select Mother Tongue</option>
                                             <option {{ $student->mother_tongue == $student->mother_tongue ? 'selected' : '' }} value="Tagalog">Tagalog</option>
                                             <option {{ $student->mother_tongue == $student->mother_tongue ? 'selected' : '' }} value="Cebuano">Cebuano</option>
@@ -194,10 +192,10 @@
                                     </div>
                                 </div>
                                 {{-- Fifth Row --}}
-                                <div class="flex gap-1">
-                                    <div>
+                                <div class="sm:flex gap-2 w-full grid grid-cols-2">
+                                    <div class="w-full">
                                         <x-input-label for="previouslevel" :value="__('Last Grade Level')" />
-                                            <select x-model="formData.previous_level" name="previous_level" id="previous_level" x-bind:disabled="!studentProfileEdit" class="border-gray-300 mt-1 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                                            <select x-model="formData.previous_level" name="previous_level" id="previous_level" x-bind:disabled="!studentProfileEdit" class="border-gray-300 mt-1 w-full focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                                                 {{-- <option {{ $student->mother_tongue == $student->mother_tongue ? 'selected' : '' }} value="">Select Mother Tongue</option> --}}
                                                 @if(isset($grades) && $grades->count() > 0)
                                                     @foreach($grades as $grade)
@@ -209,34 +207,34 @@
                                                 @endif
                                             </select>
                                     </div>
-                                    <div>
+                                    <div class="w-full">
                                         <x-input-label for="schoolyear" :value="__('Last School Year')" />
                                         <x-text-input id="schoolyear" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="schoolyear" :value="$student->previous_sy_attended ?? 'N/A' " required autofocus />
                                     </div>
-                                    <div>
+                                    <div class="w-full">
                                         <x-input-label for="section" :value="__('Last Section')" />
                                         <x-text-input id="section" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="section" :value="$student->previous_section ?? 'N/A' " required autofocus />
                                     </div>
-                                    <div>
+                                    <div class="w-full">
                                         <x-input-label for="gwa" :value="__('General Weighted Average')" />
                                         <x-text-input x-model="formData.gwa" id="gwa" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="gwa" required autofocus />
                                     </div>
                                 </div>
                                 {{-- Sixth Row --}}
-                                <div class="flex gap-1">
-                                    <div>
+                                <div class="sm:flex gap-2 w-full grid grid-cols-2">
+                                    <div class="w-full">
                                         <x-input-label for="houseno" :value="__('House No.')" />
                                         <x-text-input x-model="formData.house_no" id="houseno" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="houseno" required autofocus />
                                     </div>
-                                    <div>
+                                    <div class="w-full">
                                         <x-input-label for="street" :value="__('Street')" />
                                         <x-text-input x-model="formData.street" id="street" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="street" required autofocus />
                                     </div>
-                                    <div>
+                                    <div class="w-full">
                                         <x-input-label for="barangay" :value="__('Barangay')" />
                                         <x-text-input x-model="formData.barangay" id="barangay" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="barangay" required autofocus />
                                     </div>
-                                    <div>
+                                    <div class="w-full">
                                         <x-input-label for="city" :value="__('City/Municipality')" />
                                         <x-text-input x-model="formData.city_municipality" id="city" class="block mt-1 w-full" type="text" x-bind:disabled="!studentProfileEdit" name="city" required autofocus />
                                     </div>
@@ -244,9 +242,9 @@
                             </div>
                         </div>
                         <div x-show="activeTab === 1" class="flex flex-col gap-2 w-full justify-between">
-                            <div class="flex flex-col">
+                            <div class="flex flex-col gap-2">
                                 {{-- First Row --}}
-                                <div class="flex gap-1 w-full">
+                                <div class="flex gap-2 w-full">
                                     <div class="w-full">
                                         <x-input-label for="father_name" :value="__('Father\'s Name')" />
                                         <x-text-input x-model="formData.father_name" id="father_name" class="block mt-1 w-full" type="text" x-bind:disabled="!parentInfoEdit" name="father_name" required autofocus />
@@ -257,7 +255,7 @@
                                     </div>
                                 </div>
                                 {{-- Second Row --}}
-                                <div class="flex gap-1 w-full">
+                                <div class="flex gap-2 w-full">
                                     <div class="w-full">
                                         <x-input-label for="mother_name" :value="__('Mother\'s Name')" />
                                         <x-text-input x-model="formData.mother_name" id="mother_name" class="block mt-1 w-full" type="text" x-bind:disabled="!parentInfoEdit" name="mother_name" required autofocus />
@@ -268,7 +266,7 @@
                                     </div>
                                 </div>
                                 {{-- Third Row --}}
-                                <div class="flex gap-1 w-full">
+                                <div class="flex gap-2 w-full">
                                     <div class="w-full">
                                         <x-input-label for="guardian_name" :value="__('Guardian\'s Name')" />
                                         <x-text-input x-model="formData.guardian_name" id="guardian_name" class="block mt-1 w-full" type="text" x-bind:disabled="!parentInfoEdit" ame="guardian_name" required autofocus />
