@@ -94,9 +94,9 @@
                     <tr>
                         <td>{{ $student->lrn }}</td>
                         <td>{{ $student->last_name }}, {{ $student->first_name }} {{ $student->middle_name }}</td>
-                        <td>{{ strtoupper($student->gender) }}</td>
-                        <td>{{ strtoupper($student->student_type == 'balik_aral' ? 'Balik-Aral' : $student->student_type) }}</td>
-                        <td>{{ $student->date_enrolled ? $student->date_enrolled->format('M d, Y - h:i A') : $student->created_at->format('M d, Y - h:i A') }}</td>
+                        <td>{{ ucfirst($student->gender) }}</td>
+                        <td>{{ ucfirst($student->student_type == 'balik_aral' ? 'Balik-Aral' : $student->student_type) }}</td>
+                        <td>{{ $student->date_enrolled ? $s tudent->date_enrolled->format('M d, Y - h:i A') : $student->created_at->format('M d, Y - h:i A') }}</td>
                     </tr>
                 @endforeach
                 @if($students->isEmpty())

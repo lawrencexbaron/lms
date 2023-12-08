@@ -133,8 +133,9 @@ class SectionExport implements FromCollection, WithMapping, WithHeadings, Should
                 $event->sheet->setCellValue('J4', 'Enrolled Date');
 
                 // add bold on the headers
-                $event->sheet->getStyle('A4:J4')->getFont()->setBold(true);
+                $event->sheet->getStyle('A4:J4')->getFont()->setBold(true)->setName('Calibri');
 
+                $event->sheet->getStyle('A5:J' . $event->sheet->getHighestRow())->getFont()->setName('Calibri');
                 // Get the collection of students
                 $students = $this->collection();
 
@@ -147,7 +148,7 @@ class SectionExport implements FromCollection, WithMapping, WithHeadings, Should
                     $event->sheet->setCellValue('D' . $row, $student->middle_name);
                     $event->sheet->setCellValue('E' . $row, $student->last_name);
                     $event->sheet->setCellValue('F' . $row, $student->suffix);
-                    $event->sheet->setCellValue('G' . $row, $student->gender);
+                    $event->sheet->setCellValue('G' . $row, ucfirst($student->gender));
                     $event->sheet->setCellValue('H' . $row, ucfirst(($student->student_type == 'balik_aral') ? 'Balik Aral' : $student->student_type));
                     $event->sheet->setCellValue('I' . $row, $student->birthdate ? Carbon::parse($student->birthdate)->format('M d, Y') : '');
                     $event->sheet->setCellValue('J' . $row, $student->enrolled_date ? Carbon::parse($student->enrolled_date)->format('M d, Y h:i A') : Carbon::parse($student->created_at)->format('M d, Y h:i A'));
