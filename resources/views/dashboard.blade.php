@@ -38,7 +38,7 @@
                     <div class="bg-white border shadow-sm rounded px-6 py-5 w-full flex justify-between">
                         <div class="">
                             <p class="text-gray-500 font-semibold">Archived Students</p>
-                            <p class="text-xl font-bold">0</p>
+                            <p class="text-xl font-bold">{{ isset($archived) ? $archived : 0 }} </p>
                         </div>
                         <div class="h-full flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-gray-500">

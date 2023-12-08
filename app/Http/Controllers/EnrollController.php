@@ -205,21 +205,21 @@ class EnrollController extends Controller
             // create student address
             $studentAddress = new StudentAddress();
             $studentAddress->student_id = $student->id;
-            $studentAddress->house_no = $validate['house_no'];
-            $studentAddress->street = $validate['street'];
-            $studentAddress->barangay = $validate['barangay'];
-            $studentAddress->city_municipality = $validate['city_municipality'];
+            $studentAddress->house_no = $validate['house_no'] ?? null;
+            $studentAddress->street = $validate['street'] ?? null;
+            $studentAddress->barangay = $validate['barangay'] ?? null;
+            $studentAddress->city_municipality = $validate['city_municipality'] ?? null;
             $studentAddress->save();
-
+            
             // create student parent
             $studentParent = new StudentParent();
             $studentParent->student_id = $student->id;
-            $studentParent->father_name = $validate['father_name'];
-            $studentParent->father_contact_number = $validate['father_contact_number'];
-            $studentParent->mother_name = $validate['mother_name'];
-            $studentParent->mother_contact_number = $validate['mother_contact_number'];
-            $studentParent->guardian_name = $validate['guardian_name'];
-            $studentParent->guardian_contact_number = $validate['guardian_contact_number'];
+            $studentParent->father_name = $validate['father_name'] ?? null;
+            $studentParent->father_contact_number = $validate['father_contact_number'] ?? null;
+            $studentParent->mother_name = $validate['mother_name'] ?? null;
+            $studentParent->mother_contact_number = $validate['mother_contact_number'] ?? null;
+            $studentParent->guardian_name = $validate['guardian_name'] ?? null;
+            $studentParent->guardian_contact_number = $validate['guardian_contact_number'] ?? null;
             $studentParent->save();
 
             // create student modules

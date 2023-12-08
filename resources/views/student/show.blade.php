@@ -7,8 +7,8 @@
 
     <div class="py-12 flex" x-data="StudentShow()">
         <div class="max-w-7xl w-full flex flex-col sm:flex-row gap-2 mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white sm:w-1/4 sm:h-[410px] flex flex-col border rounded shadow-sm mt-2 overflow-y-auto">
-                <div class="px-5 py-8 flex flex-col border-b items-center justify-center text-center">
+            <div class="bg-white sm:w-1/4 sm:h-[410px] flex flex-col border rounded shadow-sm mt-2 ">
+                <div class="px-5 py-4 flex flex-col border-b items-center justify-center text-center">
                     <p class="font-bold text-2xl mb-2">
                         {{ $student->first_name }} {{ $student->last_name }} {{ $student->suffix ?? ''  }}
                     </p>
@@ -22,7 +22,7 @@
                         {{ $student->section ? $student->section->name : '' }}
                     </p>
                 </div>
-                <div class="p-3 flex flex-col">
+                <div class="p-3 h-full flex flex-col">
                     <div class="flex justify-between px-2.5 py-2 border-b">
                         <p class="font-semibold">Student Type:</p>
                         <p class="capitalize text-sm">{{ $student->student_type }}</p>
@@ -372,17 +372,17 @@
                     // last section
                     previous_section: @js($student->previous_section),
                     mother_tongue: @js($student->mother_tongue),
-                    house_no: @js($student->address->house_no),
-                    street: @js($student->address->street),
-                    barangay: @js($student->address->barangay),
-                    city_municipality: @js($student->address->city_municipality),
+                    house_no: @js($student->address->house_no ?? ''),
+                    street: @js($student->address->street ?? ''),
+                    barangay: @js($student->address->barangay ?? ''),
+                    city_municipality: @js($student->address->city_municipality ?? ''),
                     // step 2 fields
-                    father_name: @js($student->parent->father_name),
-                    father_contact_number: @js($student->parent->father_contact_number),
-                    mother_name: @js($student->parent->mother_name),
-                    mother_contact_number: @js($student->parent->mother_contact_number),
-                    guardian_name: @js($student->parent->guardian_name),
-                    guardian_contact_number: @js($student->parent->guardian_contact_number),
+                    father_name: @js($student->parent->father_name ?? ''),
+                    father_contact_number: @js($student->parent->father_contact_number ?? ''),
+                    mother_name: @js($student->parent->mother_name ?? ''),
+                    mother_contact_number: @js($student->parent->mother_contact_number ?? ''),
+                    guardian_name: @js($student->parent->guardian_name ?? ''),
+                    guardian_contact_number: @js($student->parent->guardian_contact_number ?? ''),
                     // step 3 fields
                     // what does pluck do?
                     modules: @js($student->modules->pluck('id')),
