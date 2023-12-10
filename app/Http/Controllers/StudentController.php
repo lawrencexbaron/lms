@@ -12,7 +12,7 @@ class StudentController extends Controller
 {
     //
 
-    public function show($id){
+    public function show($id){  
         $student = Student::with('parent', 'address', 'modules', 'modules')->findOrfail($id);
         $modules = Module::all();
         $grades = Grade::all();
@@ -79,6 +79,7 @@ class StudentController extends Controller
     public function destroy($id){
         $student = Student::findOrFail($id);
         $student->delete();
+        $student->modules()->detach();
 
         return redirect()->route('section.view', ['section' => $student->section_id])->with('status', 'Student archived successfully');
     }

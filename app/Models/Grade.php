@@ -13,4 +13,9 @@ class Grade extends Model
         'name',
         'status'
     ];
+
+    public function students()
+    {
+        return $this->hasMany(Student::class, 'grade_level_id');
+    }
 }

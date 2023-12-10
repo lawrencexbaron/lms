@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GradeLevelController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -40,6 +41,7 @@ Route::get('/getsettings', [SettingsController::class, 'getSetting'])->name('set
 Route::get('/sections/export/excel', [SectionController::class, 'exportExcel'])->name('section.export-exel');
 Route::get('/sections/export/pdf', [SectionController::class, 'exportPDF'])->name('section.export-pdf');
 
+Route::get('/getstatistics', [ReportController::class, 'getStatistics'])->name('statistics.getreport');
 
 
 Route::middleware('auth')->group(function () {
@@ -94,6 +96,8 @@ Route::middleware('auth')->group(function () {
     // Settings
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
+
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 });
 
 require __DIR__.'/auth.php';
