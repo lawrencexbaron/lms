@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Setting;
 use App\Services\ImageService;
 use App\Models\SchoolYear;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 
 class SettingsController extends Controller
 {
@@ -28,6 +31,106 @@ class SettingsController extends Controller
     {
         $setting = Setting::first();
         return response()->json($setting);
+    }
+
+    public function advisers(){
+        return view('advisers.index');
+    }
+
+    public function storeAdviser(Request $request){
+
+        $request->validate([
+            'first_name' => 'required|string',
+            'middle_name' => 'sometimes|string',
+            'last_name' => 'required|string',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'sometimes|nullable|digits:11|regex:/(09)[0-9]{9}/',
+        ]);
+
+        $user = User::create([
+            'first_name' => $request->first_name,
+            'middle_name' => $request->middle_name ?? null,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone' => $request->phone ?? null,
+            'password' => Hash::make('password123!@#'),
+            'role' => 'teacher',
+        ]);
+
+        return redirect()->route('advisers.index')->with('status', 'Adviser added successfully!');
+    }
+
+    public function deleteAdviser(string $id){
+
+        $user = User::findOrFail($id);
+        if($user->role != 'teacher'){
+            return redirect()->back()->with('error', 'Something went wrong!');
+        }
+        $user->delete();
+        
+
+        return response()->json([
+            'message' => 'Adviser deleted successfully.',
+            'status' => 'success',
+        ]);
+    }
+
+    public function editAdviser(Request $request, $id){
+        $adviser = User::findOrFail($id);
+        return view('advisers.edit', compact('adviser'));
+    }
+
+    public function getAdvisers(Request $request){
+        $search = $request->search ?? '';
+        $page = $request->page ?? 1;
+        $show = $request->show ?? 5;
+
+        $advisers = User::where('role', 'teacher')
+            ->where(function($query) use ($search){
+                $query->where('first_name', 'like', '%'.$search.'%')
+                    ->orWhere('middle_name', 'like', '%'.$search.'%')
+                    ->orWhere('last_name', 'like', '%'.$search.'%')
+                    ->orWhere('email', 'like', '%'.$search.'%')
+                    ->orWhere('phone', 'like', '%'.$search.'%');
+            })
+            ->paginate($show, ['*'], 'page', $page);
+
+        $response = [
+            'advisers' => $advisers->items(),
+            'total' => $advisers->total(),
+            'total_pages' => $advisers->lastPage(),
+            'current_page' => $advisers->currentPage(),
+        ];
+
+        return response()->json($response);
+    }
+
+    public function addAdviser(){
+        return view('advisers.create');
+    }
+
+    public function updateAdviser(Request $request, string $id){
+
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'first_name' => 'required|string',
+            'middle_name' => 'sometimes|string',
+            'last_name' => 'required|string',
+            'email' => 'required|email|unique:users,email,'.$user->id,
+            'phone' => 'sometimes|nullable|digits:11|regex:/(09)[0-9]{9}/',
+        ]);
+
+        $user->update([
+            'first_name' => $request->first_name,
+            'middle_name' => $request->middle_name ?? $user->middle_name ?? null,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone' => $request->phone ?? $user->phone,
+            'password' => $request->password ? Hash::make($request->password) : $user->password,
+        ]);
+
+        return redirect()->route('advisers.index')->with('status', 'Adviser updated successfully!');
     }
 
     // update any env variable

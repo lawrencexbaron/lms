@@ -40,8 +40,8 @@ Route::get('/getgrades', [GradeLevelController::class, 'GetGrades'])->name('grad
 Route::get('/getsettings', [SettingsController::class, 'getSetting'])->name('settings');
 Route::get('/sections/export/excel', [SectionController::class, 'exportExcel'])->name('section.export-exel');
 Route::get('/sections/export/pdf', [SectionController::class, 'exportPDF'])->name('section.export-pdf');
-
 Route::get('/getstatistics', [ReportController::class, 'getStatistics'])->name('statistics.getreport');
+Route::get('/advisers/getadvisers', [SettingsController::class, 'getAdvisers'])->name('advisers.getadvisers');
 
 
 Route::middleware('auth')->group(function () {
@@ -96,8 +96,15 @@ Route::middleware('auth')->group(function () {
     // Settings
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
-
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+
+    Route::get('/advisers', [SettingsController::class, 'advisers'])->name('advisers.index');
+    Route::get('/advisers/add', [SettingsController::class, 'addAdviser'])->name('advisers.add');
+    Route::post('/advisers/store', [SettingsController::class, 'storeAdviser'])->name('advisers.store');
+    Route::get('/advisers/edit/{id}', [SettingsController::class, 'editAdviser'])->name('advisers.edit');
+    Route::put('/advisers/update/{id}', [SettingsController::class, 'updateAdviser'])->name('advisers.update');
+    Route::delete('/advisers/delete/{id}', [SettingsController::class, 'deleteAdviser'])->name('advisers.delete');
+    Route::get('/advisers/getadvisers/{id}', [SettingsController::class, 'getAdvisersById'])->name('advisers.getadvisersbyid');
 });
 
 require __DIR__.'/auth.php';

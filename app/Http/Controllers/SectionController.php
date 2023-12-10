@@ -227,7 +227,7 @@ class SectionController extends Controller
         $section->delete();
 
         return response()->json([
-            'message' => 'Section deleted successfully.',
+            'message' => ' Sectiondeleted successfully.',
             'status' => 'success',
         ]);
     
