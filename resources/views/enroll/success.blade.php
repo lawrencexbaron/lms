@@ -21,7 +21,7 @@
                     <p class="text-md sm:text-lg border-b pb-6">
                         {{ $student->grade->name }}
                     </p>
-                    <p class="text-sm sm:text-md font-semibold">
+                    <p class="text-sm sm:text-md font-semibold my-4">
                         Click here to <a href="{{ route('login') }}" class="text-blue-800 hover:underline">Enrollment Menu</a>
                     </p>
                 </div>
