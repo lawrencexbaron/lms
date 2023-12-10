@@ -74,7 +74,11 @@ class SectionExport implements FromCollection, WithMapping, WithHeadings, Should
         $setting = Setting::first();
         $school_name = strtoupper($setting->system_title);
         $section = Section::find($this->section_id)->with('grade')->first();
+        if($section->adviser){
         $adviser = $section->adviser->last_name . ', ' . $section->adviser->first_name . ' ' . $section->adviser->suffix ?? '';
+        }else{
+            $adviser = 'None';
+        }
         $grade_section = $section->grade->name . ' - ' . $section->name;
 
         return [

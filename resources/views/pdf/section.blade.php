@@ -69,9 +69,14 @@
         <div class="school-info">
             <h3 class="school-name">{{ $setting->system_title }}</h3>
             <p class="adviser">
-                {{ $section->adviser->last_name }}, {{ $section->adviser->first_name }}
-                @if ($section->adviser->middle_name)
-                    {{ strtoupper(substr($section->adviser->middle_name, 0, 1)) }}.
+                @if($section->adviser)
+                    {{ $section->adviser->first_name }} 
+                    @if ($section->adviser->middle_name)
+                        {{ strtoupper(substr($section->adviser->middle_name, 0, 1)) }}.
+                    @endif
+                    {{ $section->adviser->last_name }}
+                @else
+                    No adviser assigned
                 @endif
             </p>
             <p class="section-info">
@@ -96,7 +101,7 @@
                         <td>{{ $student->last_name }}, {{ $student->first_name }} {{ $student->middle_name }}</td>
                         <td>{{ ucfirst($student->gender) }}</td>
                         <td>{{ ucfirst($student->student_type == 'balik_aral' ? 'Balik-Aral' : $student->student_type) }}</td>
-                        <td>{{ $student->date_enrolled ? $s tudent->date_enrolled->format('M d, Y - h:i A') : $student->created_at->format('M d, Y - h:i A') }}</td>
+                        <td>{{ $student->date_enrolled ? $student->date_enrolled->format('M d, Y - h:i A') : $student->created_at->format('M d, Y - h:i A') }}</td>
                     </tr>
                 @endforeach
                 @if($students->isEmpty())

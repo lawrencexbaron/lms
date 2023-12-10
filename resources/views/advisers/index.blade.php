@@ -1,60 +1,40 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Sections') }}
+            {{ __('Index') }}
         </h2>
     </x-slot>
 
-    <div class="py-12" x-data="dataTable()" x-init="fetchStudents()">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-12" x-data="dataTable()" x-init="fetchAdvisers()">
+        <div class="max-w-7xl flex flex-col mx-auto sm:px-6 lg:px-8">
             @if(session()->has('status'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                <div x-cloak class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
                     <strong class="font-bold">{{ session()->get('status') }}</strong>
                 </div>
             @endif
+            <div x-cloak x-show="message" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                <strong class="font-bold" x-text="message"></strong>
+            </div>
+            <div class="my-1 justify-end flex">
+                <x-primary-link class="" href="{{
+                    route('advisers.add')
+                }}">
+                    {{ __('Create') }}
+                </x-primary-link>
+            </div>
             <div class="bg-white flex flex-col border rounded shadow-sm mt-2 overflow-y-auto">
                 <div class="border-b px-3 py-2">
                     <p class="text-md font-medium">
-                        All {{ $section->name }} Students
-                    </p>
-                </div>
-                <div class="my-2 gap-1.5 flex p-5 justify-end">
-                    <x-primary-link href="{{ route('section.export-pdf', ['section_id' => $section->id]) }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z" />
-                        </svg>                          
-                        Print Information
-                    </x-primary-link>
-                    <x-secondary-link :href="route('section.export-exel', ['section_id' => $section->id])">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-                        </svg>                          
-                        Print to Excel
-                    </x-secondary-link>
-                    
-                </div>
-                <div class="my-2 p-5 flex-col gap-1.5 flex items-center text-center justify-center">
-                    <p class="text-2xl font-bold">
-                        @if($section->adviser)
-                            {{ $section->adviser->first_name }} {{ $section->adviser->last_name }}
-                        @else
-                            No adviser yet
-                        @endif
-                    </p>
-                    <p class="text-lg font-medium">
-                        {{ $section->grade->name }} - {{ $section->name }}
-                    </p>
-                    <p class="text-md">
-                        {{ $section->room->code}}
+                        Advisers
                     </p>
                 </div>
                 <div class="px-5 py-5 overflow-y-auto">
                     <div class="flex gap-2 justify-between">
                         {{-- <p class="text-sm my-auto">Search</p> --}}
-                        <x-text-input x-model="search" @input.debounce.500="fetchStudents()" class="py-1 text-sm" type="text" placeholder="Search" name="search" :value="old('search')" />
+                        <x-text-input x-model="search" @input.debounce.500="fetchAdvisers()" class="py-1 text-sm" type="text" placeholder="Search" name="search" :value="old('search')" />
                         <div class="flex gap-2">
                             <p class="text-sm my-auto">Show</p>
-                            <select x-model="show" @change="fetchStudents()" class="border-gray-300 text-sm py-1 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                            <select x-model="show" @change="fetchAdvisers()" class="border-gray-300 text-sm py-1 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                                 {{-- <option value="0" selected disabled>Show</option> --}}
                                 <option value="5" selected>5</option>
                                 <option value="10">10</option>
@@ -64,38 +44,45 @@
                             <p class="text-sm my-auto hidden sm:block">Entries</p>
                         </div>
                     </div>
-                    <div class="bg-white mt-2 overflow-hidden shadow-sm border sm:rounded-lg overflow-y-auto">
-                        <table class="table-auto w-full shadow-sm overflow-y-auto">
+                    <div class="bg-white mt-2 overflow-hidden shadow-sm border sm:rounded-lg overflow-x-auto">
+                        <table class="table-auto w-full shadow-sm">
                             <thead class="bg-gray-50">
                                 <tr class="border-b">
+                                    <th class="px-3 py-2 uppercase text-sm">Adviser Name</th>
+                                    <th class="px-3 py-2 uppercase text-sm">Email</th>
+                                    <th class="px-3 py-2 uppercase text-sm">Phone</th>
+                                    <th class="px-3 py-2 uppercase text-sm">Advisees</th>
                                     <th class="px-3 py-2 uppercase text-sm">Action</th>
-                                    <th class="px-3 py-2 uppercase text-sm">LRN</th>
-                                    <th class="px-3 py-2 uppercase text-sm">Name</th>
-                                    <th class="px-3 py-2 uppercase text-sm">Gender</th>
-                                    <th class="px-3 py-2 uppercase text-sm">Type</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <template x-for="student in students" :key="student.id">
+                                <template x-for="adviser in advisers" :key="adviser.id">
                                     <tr class="text-center border-b hover:bg-gray-50 text-sm">
+                                        <td x-text="`${adviser.last_name}, ${adviser.first_name} ${adviser.middle_name}`" class="px-3 py-2"></td>
+                                        <td x-text="adviser.email" class="px-3 py-2"></td>
+                                        <td x-text="adviser.phone" class="px-3 py-2"></td>
+                                        <td class="px-3 py-2">0</td>
                                         <td class="px-3 py-2 flex mx-auto whitespace-nowrap items-center justify-center gap-1">
-                                            <div @click="viewStudent(student.id)" class="px-2 py-1 bg-white border text-sm flex my-auto items-center gap-1 cursor-pointer hover:border-gray-400 transition">
-                                                <a class="flex my-auto items-center gap-1"> 
+                                            <div @click="editAdviser(adviser.id)" class="px-2 py-1 bg-white border text-sm flex my-auto items-center gap-1 cursor-pointer hover:border-gray-400 transition">
+                                                <a class="flex my-auto items-center gap-1">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                    </svg>
-                                                    <p>Profile</p>
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                                    </svg>                                              
+                                                    <p>Edit</p>
+                                                </a>
+                                            </div>
+                                            <div @click="deleteAdviser(adviser.id)" class="px-2 py-1 bg-white border text-sm flex my-auto items-center gap-1 cursor-pointer hover:border-gray-400 transition">
+                                                <a class="flex my-auto items-center gap-1">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                                                    </svg>                                              
+                                                    <p>Delete</p>
                                                 </a>
                                             </div>
                                         </td>
-                                        <td x-text="student.lrn" class="px-3 py-2"></td>
-                                        <td x-text="`${student.last_name}, ${student.first_name}`" class="px-3 py-2"></td>
-                                        <td x-text="student.gender" class="px-3 py-2 capitalize"></td>
-                                        <td x-text="student.student_type" class="px-3 py-2 capitalize"></td>
                                     </tr>
                                 </template>
-                                <tr x-show="students.length === 0" class="text-center border-b hover:bg-gray-50 text-sm">
+                                <tr x-show="advisers.length === 0" class="text-center border-b hover:bg-gray-50 text-sm">
                                     <td colspan="7" class="px-3 py-2">
                                         <p class="text-sm text-gray-500">No data found.</p>
                                     </td>
@@ -105,7 +92,7 @@
                     <div class="flex justify-between w-full mt-2">
                         <div class="text-sm my-auto">
                             <p>
-                                Show <span x-text="students.length"></span> of <span x-text="total"></span> entries
+                                Show <span x-text="advisers.length"></span> of <span x-text="total"></span> entries
                             </p>
                         </div>
                         <div class="flex rounded border my-auto">
@@ -139,6 +126,8 @@
         </div>
     </div>
 </x-app-layout>
+
+
 <script>
     // alpinejs
     function dataTable(){
@@ -146,12 +135,11 @@
             search: '',
             show: 5,
             page: 1,
-            students: [],
+            advisers: [],
             message: null,
             total : 0,
             total_pages : 0,
             curent_page : 0,
-            id: @json($section->id),
 
             nextPage(){
                 if(this.page < this.total_pages){
@@ -159,13 +147,13 @@
                 }else{
                     this.page = this.total_pages
                 }
-                this.fetchStudents()
+                this.fetchAdvisers()
             },
 
             doubleNextPage(){
                 if(this.page < this.total_pages){
                     this.page += 2
-                    this.fetchStudents()
+                    this.fetchAdvisers()
                 }else{
                     this.page = this.total_pages
                 }
@@ -174,7 +162,7 @@
             doublePreviousPage(){
                 if(this.page > 2){
                     this.page -= 2
-                    this.fetchStudents()
+                    this.fetchAdvisers()
                 }else{
                     this.page = 1
                 }
@@ -186,18 +174,18 @@
                 }else{
                     this.page = 1
                 }
-                this.fetchStudents()
+                this.fetchAdvisers()
             },
 
-            editStudent(id){
+            editAdviser(id){
                 // redirect to edit page
-                window.location.href = '/student/' + id;
+                window.location.href = '/advisers/edit/' + id;
             },
         
-            deleteStudent(id){
+            deleteAdviser(id){
                 // confirm before deletion
-                if(confirm('Are you sure you want to delete this section?')){
-                    fetch(`/sections/delete/${id}`,{
+                if(confirm('Are you sure you want to delete this adviser?')){
+                    fetch(`/advisers/delete/${id}`,{
                         method: 'DELETE',
                         headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -205,7 +193,7 @@
                     }).then(response => response.json())
                     .then(data => {
                         if(data.status == 'success'){
-                            this.fetchStudents()
+                            this.fetchAdvisers()
                             this.message = data.message
                             console.log(this.message)
                         }else{
@@ -216,16 +204,16 @@
                     });
                 }
             },
-            viewStudent(id){
+            viewSection(id){
                 // redirect to view page
-                window.location.href = '/student/' + id;
+                window.location.href = '/sections/view/' + id;
             },
 
-            fetchStudents(){
-                fetch('/enrolled/students?search=' + this.search + '&show=' + this.show + '&page=' + this.page + '&id=' + this.id)
+            fetchAdvisers(){
+                fetch('/advisers/getadvisers?search=' + this.search + '&show=' + this.show + '&page=' + this.page)
                 .then(response => response.json())
                 .then(data => {
-                    this.students = data.students
+                    this.advisers = data.advisers
                     this.total = data.total
                     this.total_pages = data.total_pages
                     this.current_page = data.current_page
@@ -235,6 +223,4 @@
             },
         }
     }
-
-
 </script>
