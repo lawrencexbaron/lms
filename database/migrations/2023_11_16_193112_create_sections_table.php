@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('capacity')->default(0);
-            $table->foreignId('adviser_id')->constrained('users')->onDelete('cascade'); // 'users' table is the default table name for the model 'User
+            $table->foreignId('adviser_id')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('grade_level_id')->nullabe()->constrained('grades')->onDelete('cascade');
             $table->foreignId('school_year_id')->nullabe()->constrained('school_years')->onDelete('cascade');
             $table->foreignId('room_id')->nullabe()->constrained('rooms')->onDelete('cascade');
