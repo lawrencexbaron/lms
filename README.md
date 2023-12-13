@@ -3,21 +3,13 @@ Learning Management System
 ## Modules
 
 -   User
--   Course
--   Assignment
--   Submission
--   Grade
--   Discussion
--   Announcement
--   Notification
--   File
--   Quiz
--   Question
--   Answer
+-   Enrollment
+-   Section & Grade Level
+-   Settings
+-   Export Student's records
+-   Authentication
 
 ## Users & Roles
 
 -   Admin
 -   Teacher
--   Student
--   Parent
